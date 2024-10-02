@@ -9,6 +9,7 @@ import More from '../components/More';
 import Events from '../components/Events';
 import SignUp from '../components/SignUp';
 import Foot from '../components/Foot';
+import Submenu from '../components/SubMenu';
 
 function AppRouter() {
   return (
@@ -22,6 +23,7 @@ function AppRouter() {
         <Route path="/More" element={<More />} />
         <Route path="/Events" element={<Events />} />
         <Route path="/SignUp" element={<SignUp />} />
+        <Route path="/Menu/SubMenu" element={<Submenu />} />
       </Routes>
       <Foot />
     </Router>
