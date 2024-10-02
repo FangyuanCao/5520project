@@ -73,7 +73,7 @@ def get_products():
     })
 
 @app.route("/update_products", methods=["POST"])
-def get_products():
+def update_products():
 
     id = request.json.get('id')
     name = request.json.get('name')
