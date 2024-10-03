@@ -50,7 +50,7 @@ function ResponsiveAppBar() {
           </Typography>
           <Box sx={{ flexGrow: 1, my: 2, color: '#5d4037', display: { xs: 'none', md: 'flex' } }}>
           <Button color="white" onClick={() => navigate('/Menu')} >Menu</Button>
-          <Button color="white" onClick={() => navigate('/AboutUs')} >AboutUs</Button>
+          <Button color="white" onClick={() => navigate('/AboutUs')} >About Us</Button>
           <Button color="white" onClick={() => navigate('/More')} >More</Button>
           </Box>
           <Button color="white" onClick={() => navigate('/login')} >Login</Button>
