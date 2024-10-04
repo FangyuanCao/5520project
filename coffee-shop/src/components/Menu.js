@@ -10,10 +10,26 @@ import coffee from "./picture/coffee.jpg";
 import {useNavigate} from 'react-router-dom';
 
 
+<<<<<<< Updated upstream
 const events = Array(12).fill({
   title: "wt",
   image: coffee,  // 这里你可以替换成不同的图片路径
 });
+=======
+
+
+
+const Item = styled(Paper)(({ theme }) => ({
+  backgroundColor: '#fff',
+  ...theme.typography.body2,
+  padding: theme.spacing(1),
+  textAlign: 'center',
+  color: theme.palette.text.secondary,
+  ...theme.applyStyles('dark', {
+    backgroundColor: '#1A2027',
+  }),
+}));
+>>>>>>> Stashed changes
 
 const Img = styled("img")({
   margin: "auto",
