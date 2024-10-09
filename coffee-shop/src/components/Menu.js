@@ -170,4 +170,12 @@ const handleClick = () => {
           </Grid>
         ))}
       </Grid>
+<<<<<<< Updated upstream
     );}
+=======
+    </Paper>
+        </Grid>
+        </Grid>
+  );
+}
+>>>>>>> Stashed changes
