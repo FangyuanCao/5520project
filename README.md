@@ -20,3 +20,18 @@ Ensure you have the following installed on your machine:
 3. Run the app 
 	```sh 
 	npm start 
+
+
+# Backend
+### Prerequisites
+Ensure you have installed Python, we are using Python 3.11.
+
+### Installation
+Install library
+1. Clone the repository.
+2. Install packages under coffee-shop-backend folder
+	```sh
+	pip install -r requirements.txt
+3. Run the backend
+	```sh
+	py app.py

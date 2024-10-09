@@ -17,7 +17,7 @@ export default function ImgMediaCard() {
     //cards for advertisement, picture and button
     <Container maxWidth={false} style={{ maxWidth: '1300px', margin: 'auto auto' }}>
     <Grid container spacing = {1} justifyContent={"center"}>
-    <Card sx={{width:1220,mt:2}} >
+    <Card sx={{width:1220, mt:2}} >
       <CardMedia
         component="img"
         alt="advertisement"
@@ -50,7 +50,7 @@ export default function ImgMediaCard() {
       </Card>
       </Grid>
       <Grid item xs={12} sm={6} md={6}>
-      <Card sx={{width:600,mt:2}} >
+      <Card sx={{width:600, mt:2}} >
       <CardMedia
         component="img"
         alt="picture1"
