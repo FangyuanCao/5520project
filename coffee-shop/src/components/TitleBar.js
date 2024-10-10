@@ -11,8 +11,13 @@ import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import {useNavigate} from 'react-router-dom';
 import Popover from '@mui/material/Popover';
+import Divider from '@mui/material/Divider';
+import { ListItem } from '@mui/material';
 
-const pages = ['Menu', 'About us', 'More'];
+const items = [
+  {id :1, name:"items1", price :"$1.8"},
+  {id :2, name:"items2", price:"$1.4"}
+  ]
 
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -59,24 +64,42 @@ function ResponsiveAppBar() {
           <Box sx={{ flexGrow: 1, my: 2, color: '#5d4037', display: { xs: 'none', md: 'flex' } }}>
           <Button color="white" onClick={() => navigate('/Menu')} >Menu</Button>
           <Button color="white" onClick={() => navigate('/AboutUs')} >About Us</Button>
-          <Button color="white" onClick={() => navigate('/More')} >More</Button>
+          <Button color="white" onClick={() => navigate('/More')} >FAQs</Button>
           </Box>
           <Button color="white" onClick={() => navigate('/login')} >Login</Button>
-          <Button aria-describedby={id} variant="contained" color="white" onClick={handleClick}>
+          <Button aria-describedby={id} variant="text" color="white" onClick={handleClick}>
             Shopping Cart
           </Button>
           <Popover
-            id={id}
-            open={open}
-            anchorEl={anchorEl}
-            onClose={handleClose}
-            anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'left',
-            }}
+          id={id}
+          open={open}
+          anchorEl={anchorEl}
+          onClose={handleClose}
+          anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left',
+          }}
           >
-          <Typography sx={{ p: 2 }}>The content of the Popover.</Typography>
-        </Popover>
+            <Box>
+                        {items.map((items) => (
+                          <Box key={items.id}  
+                          sx={{ bgcolor : 'primary.main',
+                            borderRadius : 2,
+                            width:"95%",
+                            ml:"2.5%",
+                            mt:"2%" }} >
+                            <Typography sx={{ p:2, fontSize:"25px"}}>{items.name}</Typography>
+                            <Box>
+                              <Divider />
+                              <Button variant="text" color="black">Edit</Button>
+                              <Button variant="text" color="black">Remove</Button>
+                            </Box>
+                          </Box>
+                        ))}
+            </Box>
+            <Typography sx={{ p: 2, fontSize:"25px" }}>Total:</Typography>
+            <Button variant="contained" sx={{width:400, height: 50,  color: '#5d4037', fontSize: "30px"}}>Checkout</Button>
+          </Popover>
         </Toolbar>
       </Container>
     </AppBar>
