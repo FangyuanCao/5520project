@@ -25,7 +25,7 @@ export default function foot() {
       alignItems: 'center',
     }}>
     <Typography variant="h6" color="white">
-    This is a footer text  for copy right
+    All rights reserved.
   </Typography>
     </Box>
     </ThemeProvider>
