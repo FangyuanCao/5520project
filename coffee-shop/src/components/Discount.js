@@ -2,8 +2,7 @@ import React from 'react';
 import { Grid, Box, Typography, Button, Paper } from '@mui/material';
 import coffee from "./picture/coffee.jpg";
 import {useNavigate} from 'react-router-dom';
-
-const DiscountPage = () => {
+const Discount = () => {
   const navigate = useNavigate();
   const rewards = [
     { title: 'Reward 1', description: 'Description 1', image: 'reward1.png' },
@@ -81,4 +80,4 @@ const DiscountPage = () => {
   );
 };
 
-export default DiscountPage;
+export default Discount;
