@@ -1,7 +1,7 @@
 export default function MyApp() {
     return (
       <div>
-        <h1>Welcome to events</h1>
+        <h1>Welcome to Management</h1>
       </div>
     );
   }
