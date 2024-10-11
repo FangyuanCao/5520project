@@ -21,6 +21,8 @@ Ensure you have the following installed on your machine:
 	```sh 
 	npm start 
 
+### References for frontend libraries
+(list here)
 
 # Backend
 ### Prerequisites
@@ -35,3 +37,15 @@ Install library
 3. Run the backend
 	```sh
 	py app.py
+ ### References for backend libraries
+ 1. Flask API
+ 2. SQLAlchemy (DB implementation)
+
+
+# Commit strategy and Branch handlement
+### Branching
+The main branch is the only one we commit to with valid changes. We previously create two branches mainly for local test and experiment. These two additional branches were used to learn the process with Github, however, we decide to mainly focus on main branch as rest for rest of the development process
+
+### Commit strategy
+We started developping the project in late September
+The main strategy we used is the incremental and agile development that implement and integrate components with different iterations.
