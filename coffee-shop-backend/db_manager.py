@@ -38,15 +38,19 @@ class DBManager():
         
     def create_all_tables(self):
         self.Base.metadata.create_all(bind=self.engine)
-
-    def add_user(self, uid, password):
-
-        session = self.Session()
     
-        session.add(User(uid, password))
-        session.commit()
-
-        session.close()
+    def add_user(self, uid, password):
+        try:
+            session = self.Session()
+        
+            session.add(User(uid, password))
+            session.commit()
+            session.close()
+            print('successfully added')
+            return True
+        except:
+            print('there has same uid')
+            return False
     def find_user_by_uid(self, uid):
         
         session = self.Session()
