@@ -108,7 +108,7 @@ export default function ImgMediaCard() {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small" onClick={() => navigate('/events')}>CLICK IT</Button>
+        <Button size="small" onClick={() => navigate('/events')}>CLICK It</Button>
       </CardActions>
       </Card>
     </Grid>
