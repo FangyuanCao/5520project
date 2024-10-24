@@ -19,7 +19,8 @@ const items = [
   {id :2, name:"items2", price:"$1.4"}
   ]
 
-function ResponsiveAppBar() {
+function TitleBar() {
+  const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const handleOpenNavMenu = (event) => {
@@ -28,8 +29,6 @@ function ResponsiveAppBar() {
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
-  const navigate = useNavigate();
-  
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -106,4 +105,4 @@ function ResponsiveAppBar() {
   );
 }
 
-export default ResponsiveAppBar;
+export default TitleBar;
