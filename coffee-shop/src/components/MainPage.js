@@ -87,7 +87,7 @@ export default function ImgMediaCard() {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small" onClick={() => navigate('/login')}>Sign up</Button>
+        <Button size="small" onClick={() => navigate('/SignUp')}>Sign Up</Button>
       </CardActions>
       </Card>
     </Grid>
