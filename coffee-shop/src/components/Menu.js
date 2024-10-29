@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { createTheme, ThemeProvider} from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
@@ -30,14 +29,7 @@ const images = [
   
 ];
 
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: '#007FFF',
-      dark: '#0066CC',
-    },
-  },
-});
+
 const ImageButton = styled(ButtonBase)(({ theme }) => ({
   position: 'relative',
   height: 200,
@@ -110,12 +102,12 @@ const handleClick = () => {
     return (
       <Grid container spacing={2}>
         <Grid item xs={12} container direction="column" alignItems="center" spacing={1}>
-          <ThemeProvider theme={theme}>
+        
             <Box 
               sx={{
                 width: "100%",
                 height: 80,
-                bgcolor: 'primary.main', 
+                bgcolor: 'primary.second', 
                 display: 'flex', 
                 alignItems: 'center',
                 justifyContent:'center',
@@ -125,7 +117,6 @@ const handleClick = () => {
                 Menu
               </Typography>
             </Box>
-          </ThemeProvider>
         </Grid>
     
         {/* 在这里开始渲染 12 个物品，每行 4 个 */}
