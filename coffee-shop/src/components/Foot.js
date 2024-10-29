@@ -1,22 +1,11 @@
 import * as React from 'react';
-import { createTheme, ThemeProvider} from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
-
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: '#007FFF',
-      dark: '#0066CC',
-    },
-  },
-});
-
 export default function foot() {
   return (
-    <ThemeProvider theme={theme}>
-      <Box 
+    
+<Box 
     sx={{
       width: "100%",
       height: 80,
@@ -27,7 +16,7 @@ export default function foot() {
     <Typography variant="h6" color="white">
     All rights reserved.
   </Typography>
-    </Box>
-    </ThemeProvider>
+</Box>
+
   );
 }
