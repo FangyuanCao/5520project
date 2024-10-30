@@ -59,7 +59,6 @@ def handle_user_login():
     
 
     
-
 def token_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
