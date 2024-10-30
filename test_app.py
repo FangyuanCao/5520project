@@ -1,5 +1,5 @@
 import pytest
-from app import app
+from coffee_shop_backend.app import app
 
 
 import requests
@@ -28,8 +28,8 @@ def test_registration_success(client):
     assert response.json == {'status': 'complete'}
 
 
-# scenario 2, user provides incomplete username password, the server should refuse to process the job and return 403 error
 
+# scenario 2, user provides incomplete username password, the server should refuse to process the job and return 403 error
 def test_registration_missing_data(client):
     print("# scenario 2, user provides incomplete username password, the server should refuse to process the job and return 403 error")
     print(f"Expected status code: 403")
@@ -82,6 +82,27 @@ def test_login_missing_data(client):
 
     assert response.status_code == 401
     assert response.json == {'status': 'unauthorized'}
+
+
+
+def test_delete_user_success(client):
+    print("# scenario 1.1, user provides complete username and password, the function expect to return response with 200")
+    print(f"Expected status code: 200")
+    print(f"Expected response: {str({'status':'complete'})}")
+    data = {'user_name':'food@mail.com','password':123}
+    response = client.post('/delete_user',json=data)
+    
+    assert response.status_code == 200
+    assert response.json == {'status': 'complete'}
+def test_delete_user_no_user_found(client):
+    print("# scenario 1.2, user provides complete username and password, the function expect to return response with 200")
+    print(f"Expected status code: 401")
+    print(f"Expected response: {str({'status':'password is not sufficient or user not exist'})}")
+    data = {'user_name':'food@mail.com','password':123}
+    response = client.post('/delete_user',json=data)
+    
+    assert response.status_code == 401
+    # assert response.json == {'status': 'password is not sufficient or user not exist'}
 
 ## test 3 product display
 def test_product_display_success(client):

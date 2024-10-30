@@ -51,11 +51,30 @@ class DBManager():
         except:
             print('there has same uid')
             return False
+    
+    def remove_user(self, uid):
+        flag=False
+        session = self.Session()
+        try:
+            user = self.find_user_by_uid(uid)
+            print(user)
+            if user:
+                session.delete(user)
+                session.commit()
+                flag = True
+
+        except:
+            session.rollback()
+        finally:
+            session.close()
+        
+        return flag
+
     def find_user_by_uid(self, uid):
         
         session = self.Session()
         
-        user = session.query(User).filter(User.uid==uid).all()
+        user = session.query(User).filter(User.uid==uid).first()
 
         session.close()
         return user

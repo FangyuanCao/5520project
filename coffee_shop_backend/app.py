@@ -1,9 +1,10 @@
 from functools import wraps
 import secrets
+import bcrypt
 from flask import Flask, jsonify, render_template
 from flask import request
 from flask_cors import CORS, cross_origin
-
+from db_manager import *
 app = Flask(__name__)
 app.secret_key = "123"
 
@@ -20,6 +21,8 @@ fake_product_list=[
     {"id":500, "name":"car","type": "special", "price":[999999], "options":["unit"], "status":False},
 ]
 
+DBM = DBManager(Base)
+
 @app.route('/')
 def index():
     return 'welcome'
@@ -30,9 +33,42 @@ def handle_registration():
     password = request.json.get('password')
 
     if uid and password:
+        password = str(password)
         print(f"received registration from {uid} with password {password}")
 
+        if DBM.find_user_by_uid(uid=uid):
+            return jsonify({'status':'duplicate user name'})
+
+        hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+
+        DBM.add_user(uid = uid, password= hashed_password)
+
         return jsonify({'status':'complete'})
+    else:
+        return jsonify({'status':'insufficient information'}), 403
+    
+@app.route('/delete_user', methods = ["POST"])
+def handle_delete_user():
+    uid = request.json.get('user_name')
+    password = request.json.get('password')
+
+    if uid and password:
+        password = str(password)
+        print(f"delete {uid}")
+        user = DBM.find_user_by_uid(uid=uid)
+        if user:
+            stored_hashed_password = user.password
+            if stored_hashed_password and bcrypt.checkpw(password.encode('utf-8'), stored_hashed_password):
+                flag = DBM.remove_user(uid=uid)
+                # print(flag)
+                if flag:
+                    return jsonify({'status':'complete'}) 
+                else:
+                    return jsonify({'status':'deletion fail'}), 401
+            else:
+                return jsonify({'status':'password incorrect'}), 401
+        else:
+            return jsonify({'status':'no user'}), 401
     else:
         return jsonify({'status':'insufficient information'}), 403
 
@@ -44,15 +80,19 @@ def handle_user_login():
     print(f"received login request from {uid} with password {password}")
 
     # authentication process
-    # fake process
+    # 
     if uid and password:
-        fetch_password_for_uid = 123
-        
-        # if autherized
-        if password == fetch_password_for_uid:
-            server_auth = secrets.token_urlsafe(16)
 
-            return jsonify({'status':'complete','authentication':server_auth})
+        password = str(password)
+        print(f"login request {uid}")
+        user = DBM.find_user_by_uid(uid=uid)
+        if user:
+            stored_hashed_password = user.password
+            if stored_hashed_password and bcrypt.checkpw(password.encode('utf-8'), stored_hashed_password):
+                server_auth = secrets.token_urlsafe(16)
+
+                return jsonify({'status':'complete','authentication':server_auth})
+        
     ##########################
 
     return jsonify({'status':'unauthorized'}), 401 
