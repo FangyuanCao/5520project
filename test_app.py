@@ -1,6 +1,6 @@
 import pytest
-from coffee_shop_backend.app import app
-from coffee_shop_backend.db_manager import *
+from app import app
+# from db_manager import *
 
 import requests
 
