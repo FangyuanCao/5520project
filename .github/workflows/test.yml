@@ -1,0 +1,59 @@
+name: CI Test Workflow
+
+on: [push, pull_request]
+
+jobs:
+    test:
+        runs-on: ubuntu-latest
+
+        services:
+        # Set up a database service if needed (for example, PostgreSQL)
+        db:
+            image: postgres:13
+            env:
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: password
+            POSTGRES_DB: test_db
+            options: >-
+            --health-cmd="pg_isready -U postgres"
+            --health-interval=10s
+            --health-timeout=5s
+            --health-retries=5
+            ports:
+            - 5432:5432
+            # wait for the service to be healthy
+            health-check:
+            test: ["CMD", "pg_isready", "-U", "postgres"]
+            interval: 10s
+            timeout: 5s
+            retries: 5
+
+    steps:
+    - name: Checkout code
+    uses: actions/checkout@v3
+
+    # Node setup for React client
+    - name: Set up Node.js
+    uses: actions/setup-node@v3
+    with:
+        node-version: '16'
+
+    - name: Install dependencies and run React client tests
+    working-directory: client
+    run: |
+        npm install
+        npm test -- --watchAll=false
+
+    # Python setup for Flask server
+    - name: Set up Python
+    uses: actions/setup-python@v4
+    with:
+        python-version: '3.10'
+
+    - name: Install dependencies and run Flask server tests
+    working-directory: server
+    run: |
+        python -m venv venv
+        source venv/bin/activate
+        pip install -r requirements.txt
+        pytest
