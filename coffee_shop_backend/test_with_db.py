@@ -1,7 +1,7 @@
-from db_manager import *
+# from db_manager import *
 
-DBM = DBManager(base=Base)
+# DBM = DBManager(base=Base)
 
-DBM.create_all_tables()
+# DBM.create_all_tables()
 
-print("test")
+# print("test")
