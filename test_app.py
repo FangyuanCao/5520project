@@ -1,10 +1,15 @@
 import pytest
+
+import requests
+import sys
+from pathlib import Path
+
+# Add backend folder to PYTHONPATH
+sys.path.insert(0, str(Path(__file__).resolve().parent / "coffee_shop_backend"))
+
 # from coffee_shop_backend import *
 from app import *
 # from db_manager import *
-
-import requests
-
 
 # This is for unit test backend functions
 @pytest.fixture
