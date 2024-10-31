@@ -1,5 +1,7 @@
 module.exports = {
-  setupFilesAfterEnv: ['<rootDir>/src/setupTests.js'],
+  rootDir: '../',
+  testMatch: ['<rootDir>/ButtonAndRouter.test.js'],
+  setupFilesAfterEnv: ['<rootDir>/coffee-shop/src/setupTests.js'],
   // Indicate the matching mode of the test file
   testMatch: ['**/__tests__/**/*.js?(x)', '**/?(*.)+(spec|test).js?(x)'],
   // Set up the test environment

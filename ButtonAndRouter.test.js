@@ -1,11 +1,11 @@
 import React from 'react';
-import MainPage from './MainPage';
-import Login from './login';
-import TitleBar from './TitleBar';
-import Menu from './Menu';
-import SignUp from './SignUp';
-import AboutUs from './AboutUs';
-import Submenu from './SubMenu';
+import MainPage from './coffee-shop/src/components/MainPage';
+import Login from './coffee-shop/src/components/login';
+import TitleBar from './coffee-shop/src/components/TitleBar';
+import Menu from './coffee-shop/src/components/Menu';
+import SignUp from './coffee-shop/src/components/SignUp';
+import AboutUs from './coffee-shop/src/components/AboutUs';
+import Submenu from './coffee-shop/src/components/SubMenu';
 import { MemoryRouter,Routes,Route } from 'react-router-dom';
 import { render, screen, fireEvent, waitFor} from '@testing-library/react';
 
