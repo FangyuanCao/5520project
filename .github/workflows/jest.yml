@@ -26,5 +26,5 @@ jobs:
     - name: Run Unit Tests
       run: |
         cd coffee-shop
-        npm install
+        npm test
         
