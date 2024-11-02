@@ -8,6 +8,7 @@ from db_manager import *
 app = Flask(__name__)
 app.secret_key = "123"
 
+CORS(app)
 
 fake_product_list=[
     {"id":1, "name":"coffee","type": "beverage", "price":[1,2,3], "options":["S","M","L"], "status":True}, #type can be food or beverage or combo
@@ -22,6 +23,7 @@ fake_product_list=[
 ]
 
 DBM = DBManager(Base)
+DBM.create_all_tables()
 
 @app.route('/')
 def index():
@@ -29,7 +31,7 @@ def index():
 
 @app.route('/registration', methods = ["POST"])
 def handle_registration():
-    uid = request.json.get('user_name')
+    uid = request.json.get('uid')
     password = request.json.get('password')
 
     if uid and password:
@@ -49,7 +51,7 @@ def handle_registration():
     
 @app.route('/delete_user', methods = ["POST"])
 def handle_delete_user():
-    uid = request.json.get('user_name')
+    uid = request.json.get('uid')
     password = request.json.get('password')
 
     if uid and password:
@@ -176,7 +178,9 @@ def purchase(uid):
     return jsonify({'url':'test_url'})
 
 if __name__ == "__main__":
+    DBM = DBManager(Base)
+    DBM.create_all_tables()  # Ensure tables are created
+    app.run(host='0.0.0.0', port=5000)
 
-    app.run(host='0.0.0.0',port=3000)
 
     

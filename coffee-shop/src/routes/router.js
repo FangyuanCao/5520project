@@ -16,27 +16,13 @@ import Analytics from '../components/manage-components/Analytics';
 import MembershipManage from '../components/manage-components/MembershipManage';
 import OrderManage from '../components/manage-components/OrderManage';
 
-
-
-const PrivateRoute = ({ element }) => {
-  const isAuthenticated = false; 
-  return isAuthenticated ? element : <Navigate to="../Discount" replace />;
-};
-
 const AppRouter = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  const handleLogin = () => {
-    setIsAuthenticated(true);
-    console.log('Login successful');
-  };
-
   return (
     <Router>
       <TitleBar />
       <Routes>
         <Route path="/" element={<MainPage />} />
-        <Route path="/login" element={<Login onLogin={handleLogin} />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/Menu" element={<Menu />} />
         <Route path="/AboutUs" element={<About />} />
         <Route path="/FAQs" element={<FAQs />} />
