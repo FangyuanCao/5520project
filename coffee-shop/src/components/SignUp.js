@@ -43,7 +43,7 @@ export default function LoginGrid() {
           'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({
-          uid: accountName,
+          user_name: accountName,
           password: password,
         }),
       });
