@@ -1,6 +1,6 @@
 module.exports = {
   rootDir: '../',
-  testMatch: ['<rootDir>/ButtonAndRouter.test.js', '**/__tests__/**/*.js?(x)', '**/?(*.)+(spec|test).js?(x)'],
+  testMatch: ['<rootDir>/coffee-shop/ButtonAndRouter.test.js', '**/__tests__/**/*.js?(x)', '**/?(*.)+(spec|test).js?(x)'],
   setupFilesAfterEnv: ['<rootDir>/coffee-shop/src/setupTests.js'],
   // Set up the test environment
   testEnvironment: 'jsdom',

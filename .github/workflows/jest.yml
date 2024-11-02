@@ -15,10 +15,16 @@ jobs:
       with:
         node-version: '20'
 
+  #  - name: Install dependencies
+  #    run: npm install jest @testing-library/react
     - name: Install dependencies
-      run: npm install jest @testing-library/react
+      run: |
+        cd coffee-shop
+        npm install
         
 
     - name: Run Unit Tests
-      run: npm test
+      run: |
+        cd coffee-shop
+        npm install
         
