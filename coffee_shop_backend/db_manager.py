@@ -78,3 +78,11 @@ class DBManager():
 
         session.close()
         return user
+    
+
+# DBM = DBManager(base=Base)
+# session = DBM.Session()
+# users= session.query(User).all()
+# session.close()
+
+# print(users)

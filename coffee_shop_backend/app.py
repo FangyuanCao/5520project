@@ -31,7 +31,7 @@ def index():
 
 @app.route('/registration', methods = ["POST"])
 def handle_registration():
-    uid = request.json.get('uid')
+    uid = request.json.get('user_name')
     password = request.json.get('password')
 
     if uid and password:
@@ -51,7 +51,7 @@ def handle_registration():
     
 @app.route('/delete_user', methods = ["POST"])
 def handle_delete_user():
-    uid = request.json.get('uid')
+    uid = request.json.get('user_name')
     password = request.json.get('password')
 
     if uid and password:
@@ -178,8 +178,7 @@ def purchase(uid):
     return jsonify({'url':'test_url'})
 
 if __name__ == "__main__":
-    DBM = DBManager(Base)
-    DBM.create_all_tables()  # Ensure tables are created
+    
     app.run(host='0.0.0.0', port=5000)
 
 
