@@ -47,7 +47,6 @@ const AppRouter = () => {
         <Route path="/Analytics" element={<Analytics />} />
         <Route path="/MembershipManage" element={<MembershipManage />} /> 
         <Route path="/OrderManage" element={<OrderManage />} /> 
-
       </Routes>
       <Foot />
     </Router>

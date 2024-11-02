@@ -6,13 +6,13 @@ import Menu from './coffee-shop/src/components/Menu';
 import SignUp from './coffee-shop/src/components/SignUp';
 import AboutUs from './coffee-shop/src/components/AboutUs';
 import Submenu from './coffee-shop/src/components/SubMenu';
-import { MemoryRouter,Routes,Route } from 'react-router-dom';
+import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import { render, screen, fireEvent, waitFor} from '@testing-library/react';
 
 test('renders all navigation buttons in titleBar', () => {
   render(
     <MemoryRouter>
-        <TitleBar />
+        <TitleBar/>
     </MemoryRouter>
   );
   expect(screen.getByText('Menu')).toBeInTheDocument();

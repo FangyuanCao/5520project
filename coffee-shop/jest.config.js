@@ -1,9 +1,7 @@
 module.exports = {
   rootDir: '../',
-  testMatch: ['<rootDir>/ButtonAndRouter.test.js'],
+  testMatch: ['<rootDir>/ButtonAndRouter.test.js', '**/__tests__/**/*.js?(x)', '**/?(*.)+(spec|test).js?(x)'],
   setupFilesAfterEnv: ['<rootDir>/coffee-shop/src/setupTests.js'],
-  // Indicate the matching mode of the test file
-  testMatch: ['**/__tests__/**/*.js?(x)', '**/?(*.)+(spec|test).js?(x)'],
   // Set up the test environment
   testEnvironment: 'jsdom',
   // Import the Babel pack
@@ -12,17 +10,17 @@ module.exports = {
   },
   // Mock irelevent picture files
   moduleNameMapper: {
-    '\\.(jpg|jpeg|png|gif|svg)$': '<rootDir>/src/__mocks__/fileMock.js',
+    '\\.(jpg|jpeg|png|gif|svg)$': '<rootDir>/coffee-shop/src/__mocks__/fileMock.js',
   },
   // Config the test report
-  reporters: [
-    'default',
-    ['jest-html-reporter', {
-      pageTitle: 'Test Report'
-    }]
-  ],
+  //reporters: [
+  //  'default',
+  //  ['jest-html-reporter', {
+  //    pageTitle: 'Test Report'
+  //  }]
+  //],
   // Config the coverage rate report 
   collectCoverage: true,
-  coverageDirectory: 'coverage',
+  coverageDirectory: 'coffee-shop/coverage',
   coverageReporters: ['html', 'text'],
 };
