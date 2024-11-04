@@ -43,7 +43,7 @@ const Login = ({onLogin}) => {
       navigate('/Discount');
       }
       else if(verify.belong =='admin'){
-        navigate('/MembershipManage');
+        navigate('/admin');
       }
     } else {
       alert('Account name or password may not right ');

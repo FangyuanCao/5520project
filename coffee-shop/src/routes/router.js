@@ -1,6 +1,6 @@
-import React from 'react';
-import {useState}from 'react';
-import {Routes,Navigate,BrowserRouter as Router, Route } from 'react-router-dom';
+// AppRouter.js
+import React, { useState } from 'react';
+import { Routes, Navigate, BrowserRouter as Router, Route } from 'react-router-dom';
 import MainPage from '../components/MainPage';
 import Login from '../components/login';
 import TitleBar from '../components/TitleBar';
@@ -11,72 +11,41 @@ import SignUp from '../components/SignUp';
 import Foot from '../components/Foot';
 import Submenu from '../components/SubMenu';
 import Discount from '../components/Discount';
-import AdminManage from '../components/manage-components/AdminManage';
-import Analytics from '../components/manage-components/Analytics';
-import MembershipManage from '../components/manage-components/MembershipManage';
-import OrderManage from '../components/manage-components/OrderManage';
+import Mainlayout from '../components/manage-components/Mainlayout';
+
+const PrivateRoute = ({ element, isAuthenticated }) => {
+  return isAuthenticated ? element : <Navigate to="/login" replace />;
+};
 
 const AppRouter = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  const handleLogin = () => {
+    setIsAuthenticated(true);
+    console.log('Login successful');
+  };
+
   return (
     <Router>
-      <TitleBar />
       <Routes>
-        <Route path="/" element={<MainPage />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/Menu" element={<Menu />} />
-        <Route path="/AboutUs" element={<About />} />
-        <Route path="/FAQs" element={<FAQs />} />
-        <Route path="/SignUp" element={<SignUp />} />
-        <Route path="/Menu/SubMenu" element={<Submenu />} />
-        <Route path="/Discount" element={<Discount/>} />
-        <Route path="/AdminManage" element={<AdminManage />} />
-        <Route path="/Analytics" element={<Analytics />} />
-        <Route path="/MembershipManage" element={<MembershipManage />} /> 
-        <Route path="/OrderManage" element={<OrderManage />} /> 
+        {/* 用户界面路由 */}
+        <Route path="/" element={<><TitleBar /><MainPage /><Foot /></>} />
+        <Route path="/login" element={<Login onLogin={handleLogin} />} />
+        <Route path="/Menu" element={<><TitleBar /><Menu /><Foot /></>} />
+        <Route path="/AboutUs" element={<><TitleBar /><About /><Foot /></>} />
+        <Route path="/FAQs" element={<><TitleBar /><FAQs /><Foot /></>} />
+        <Route path="/SignUp" element={<><TitleBar /><SignUp /><Foot /></>} />
+        <Route path="/Menu/SubMenu" element={<><TitleBar /><Submenu /><Foot /></>} />
+        <Route path="/Discount" element={<><TitleBar /><Discount /><Foot /></>} />
+
+        {/* 仅在 /admin/* 路径下加载 Mainlayout */}
+        <Route 
+          path="/admin/*" 
+          element={<PrivateRoute isAuthenticated={isAuthenticated} element={<Mainlayout />} />} 
+        />
       </Routes>
-      <Foot />
     </Router>
   );
 };
-
-/*const isAuthenticated = true;
-const PrivateRoute = ({ element: element, ...rest }) => (
-  <Route
-    {...rest}
-    render={props =>
-      isAuthenticated ? (
-        <Component {...props} />
-      ) : (
-        <Redirect to="/login" />
-      )
-    }
-  />
-);
-
-const App = () => (
-  <Switch>
-    <PrivateRoute path="/discount" component={DiscountPage} />
-  </Switch>
-);*/
-
-/*function AppRouter() {
-  return (
-    <Router>
-      <TitleBar />
-      <Routes>
-        <Route path="/" element={<MainPage />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/Menu" element={<Menu />} />
-        <Route path="/AboutUs" element={<About />} />
-        <Route path="/FAQs" element={<FAQs />} />
-        <Route path="/Management" element={<Management />} />
-        <Route path="/SignUp" element={<SignUp />} />
-        <Route path="/Menu/SubMenu" element={<Submenu />} />
-        <Route path="/Discount" element={<Discount />} />
-      </Routes>
-      <Foot />
-    </Router>
-  );
-}*/
 
 export default AppRouter;
