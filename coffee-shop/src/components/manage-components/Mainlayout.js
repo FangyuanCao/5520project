@@ -47,7 +47,6 @@ const Mainlayout = () => {
                 </List>
             </Drawer>
 
-            {/* 右侧内容区域 */}
             <Box 
                 component="main" 
                 sx={{ 

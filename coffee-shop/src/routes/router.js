@@ -30,7 +30,7 @@ const AppRouter = () => {
       <Routes>
         {/* 用户界面路由 */}
         <Route path="/" element={<><TitleBar /><MainPage /><Foot /></>} />
-        <Route path="/login" element={<Login onLogin={handleLogin} />} />
+        <Route path="/login" element={<><TitleBar /><Login /><Foot /></>} />
         <Route path="/Menu" element={<><TitleBar /><Menu /><Foot /></>} />
         <Route path="/AboutUs" element={<><TitleBar /><About /><Foot /></>} />
         <Route path="/FAQs" element={<><TitleBar /><FAQs /><Foot /></>} />
