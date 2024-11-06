@@ -1,7 +1,7 @@
 import enum
 import uuid
 # from xmlrpc.client import Boolean
-from sqlalchemy import JSON, Float, create_engine, ForeignKey, Column, String, Integer, CHAR, Boolean, PickleType
+from sqlalchemy import JSON, Float, create_engine, ForeignKey, Column, String, Integer, CHAR, Boolean, PickleType, Enum
 # from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import declarative_base
 from sqlalchemy.orm import sessionmaker
@@ -11,6 +11,11 @@ from sqlalchemy.orm import relationship
 
 Base = declarative_base()
 
+class CookingProcess(enum.Enum):
+    ORDER_PLACED = "order_placed"
+    ORDER_PREPARING = "order_preparing"
+    ORDER_COMPLETE = "order_complete"
+    ORDER_DELIVERED = "order_delivered"
 
 class User(Base):
     __tablename__ = "Users"
@@ -46,11 +51,7 @@ class Product(Base):
                 f"product_status={'Available' if self.product_status else 'Not Available'}, "
                 f"product_prices={self.product_prices}, product_options={self.product_options})>")
 
-class CookingProcess(enum.Enum):
-    ORDER_PLACED = "order_placed"
-    ORDER_PREPARING = "order_preparing"
-    ORDER_COMPLETE = "order_complete"
-    ORDER_DELIVERED = "order_delivered"
+
 
 class PurchaseHistory(Base):
     __tablename__ = 'purchase_history'
@@ -60,11 +61,11 @@ class PurchaseHistory(Base):
     purchase_options = Column(String(50), nullable=True)   # Options like size or alternative flavor
     price = Column(Float, nullable=False)                  # Price to be paid
     transaction_status = Column(Boolean, default=False)    # Payment received or not
-    cooking_process = Column(enum.Enum(CookingProcess), default=CookingProcess.ORDER_PLACED)  # Cooking process stage
-    uid = Column(Integer, ForeignKey('user.uid'), nullable=False)  # Foreign key to user
+    cooking_process = Column(Enum(CookingProcess), default=CookingProcess.ORDER_PLACED)  # Cooking process stage
+    uid = Column(Integer, ForeignKey('Users.uid'), nullable=False)  # Foreign key to user
 
     # Relationship to User
-    user = relationship("User", back_populates="purchases")
+    user = relationship("Users", back_populates="purchases")
 
     def __repr__(self):
         return (f"<PurchaseHistory(purchase_product={self.purchase_product}, "
