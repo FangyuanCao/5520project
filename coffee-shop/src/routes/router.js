@@ -36,7 +36,7 @@ const AppRouter = () => {
         <Route path="/AboutUs" element={<><TitleBar /><About /><Foot /></>} />
         <Route path="/FAQs" element={<><TitleBar /><FAQs /><Foot /></>} />
         <Route path="/SignUp" element={<><TitleBar /><SignUp /><Foot /></>} />
-        <Route path="Menu/SubMenu" element={<><TitleBar /><Submenu /><Foot /></>} />
+        <Route path="/SubMenu" element={<><TitleBar /><Submenu /><Foot /></>} />
         <Route path="/Discount" element={<><TitleBar /><Discount /><Foot /></>} />
 
         {/* 仅在 /admin/* 路径下加载 Mainlayout */}
