@@ -52,7 +52,6 @@ class Product(Base):
                 f"product_prices={self.product_prices}, product_options={self.product_options})>")
 
 
-
 class PurchaseHistory(Base):
     __tablename__ = 'purchase_history'
     
