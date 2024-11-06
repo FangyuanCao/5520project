@@ -64,7 +64,7 @@ class PurchaseHistory(Base):
     uid = Column(Integer, ForeignKey('Users.uid'), nullable=False)  # Foreign key to user
 
     # Relationship to User
-    user = relationship("Users", back_populates="purchases")
+    # user = relationship("Users", back_populates="purchases")
 
     def __repr__(self):
         return (f"<PurchaseHistory(purchase_product={self.purchase_product}, "
