@@ -11,7 +11,7 @@ import {useNavigate} from 'react-router-dom';
 
 const events = Array(12).fill({
   title: "wt",
-  image: coffee,  // 这里你可以替换成不同的图片路径
+  image: coffee,  
 });
 
 const Img = styled("img")({
@@ -119,9 +119,9 @@ const handleClick = () => {
             </Box>
         </Grid>
     
-        {/* 在这里开始渲染 12 个物品，每行 4 个 */}
+        
         {events.map((event, index) => (
-          <Grid item xs={12} sm={6} md={3} key={index}> {/* 每行 4 个物品 */}
+          <Grid item xs={12} sm={6} md={3} key={index}> 
             <Paper
               sx={{
                 p: 2,
@@ -134,7 +134,7 @@ const handleClick = () => {
               <ImageButton
                 focusRipple
                 style={{
-                  width: "100%",  // 调整物品宽度
+                  width: "100%",  
                 }}
                 onClick={() => navigate('/Menu/SubMenu')}
               >
