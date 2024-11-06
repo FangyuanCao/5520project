@@ -55,7 +55,7 @@ const faqs = [
     summary: 'Accordion 12',
     details: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex, sit amet blandit leo lobortis eget.',
   }
-  // Add more FAQs here
+  // Add more FAQs her
 ];
 
 export default function AccordionUsage() {

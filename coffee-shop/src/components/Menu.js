@@ -136,7 +136,7 @@ const handleClick = () => {
                 style={{
                   width: "100%",  
                 }}
-                onClick={() => navigate('/Menu/SubMenu')}
+                onClick={() => navigate('/SubMenu')}
               >
                 <ImageSrc style={{ backgroundImage: `url(${event.image})` }} />
                 <ImageBackdrop className="MuiImageBackdrop-root" />

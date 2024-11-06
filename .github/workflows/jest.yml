@@ -15,8 +15,7 @@ jobs:
       with:
         node-version: '20'
 
-  #  - name: Install dependencies
-  #    run: npm install jest @testing-library/react
+ 
     - name: Install dependencies
       run: |
         cd coffee-shop

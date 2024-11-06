@@ -11,6 +11,20 @@ import {useNavigate} from 'react-router-dom';
 import ads from './picture/adsPicture.jpg';
 import coffee from './picture/coffee.jpg';
 
+const events = [
+  {id :1, title: 'Event 1', description: 'coffee1', image:coffee},
+  {id :2, title: 'Event 2', description: 'coffee2', image:coffee },
+  {id :3, title: 'Event 3', description: 'aaaa', image:coffee },
+  {id :4, title: 'Event 4', description: 'aaaa', image:coffee },
+  {id :5, title: 'Event 5', description: 'aaaa', image:coffee },
+  {id :6, title: 'Event 6', description: 'aaaa', image:coffee },
+  {id :7, title: 'Event 7', description: 'aaaa', image:coffee },
+  {id :8, title: 'Event 8', description: 'aaaa', image:coffee },
+  {id :9, title: 'Event 9', description: 'aaaa', image:coffee },
+  {id :10, title: 'Event 10', description: 'aaaa', image:coffee},
+  {id :11, title: 'Event 11', description: 'aaaa', image:coffee},
+  {id :12, title: 'Event 12', description: 'aaaa', image:coffee},
+]
 
 export default function ImgMediaCard() {
   const navigate = useNavigate();
@@ -38,7 +52,7 @@ export default function ImgMediaCard() {
               </Typography>
             </CardContent>
             <CardActions>
-              <Button size="small"  onClick={() => navigate('/events')}>Buy</Button>
+              <Button size="small"  onClick={() => navigate('/Discounts')}>Buy</Button>
             </CardActions>
             </Card>
           </Grid>
