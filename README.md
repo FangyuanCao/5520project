@@ -55,4 +55,4 @@ We started developping the project in late September
 The main strategy we used is the incremental and agile development that implement and integrate components with different iterations.
 
 ### Sequence diagram
-![message workflow](assets/Sequence_diagram.png)
+![message workflow](assets/Sequence_diagram_bg.png)
