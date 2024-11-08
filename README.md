@@ -22,7 +22,9 @@ Ensure you have the following installed on your machine:
 	npm start 
 
 ### References for frontend libraries
-(list here)
+1. React
+2. Material UI
+3. React testing and Jest
 
 # Backend
 ### Prerequisites
@@ -38,8 +40,10 @@ Install library
 	```sh
 	py app.py
  ### References for backend libraries
- 1. Flask API
+ 1. Flask API (server)
  2. SQLAlchemy (DB implementation)
+ 3. pytest (Flask-Testing)
+ 4. bcrypt (secure hashing)
 
 
 # Commit strategy and Branch handlement
