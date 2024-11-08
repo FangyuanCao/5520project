@@ -56,3 +56,5 @@ The main strategy we used is the incremental and agile development that implemen
 
 ### Sequence diagram
 ![message workflow](assets/Sequence_diagram_bg.png)
+### Sequence diagram
+![component](assets/component_diagram_bg.png)
