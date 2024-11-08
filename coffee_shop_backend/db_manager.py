@@ -22,12 +22,13 @@ class User(Base):
 
     uid = Column("uid", String, primary_key=True)
     password = Column("password", String)
+    user_type = Column("user_type", String)
     
 
-    def __init__(self, uid, password):
+    def __init__(self, uid, password, type):
         self.uid = uid
         self.password = password
-        
+        self.type=type
     
     def return_user_info(self):
         return {"uid":self.uid}
@@ -40,11 +41,20 @@ class User(Base):
 class Product(Base):
     __tablename__ = 'product'
     
-    product_id = Column(Integer, primary_key=True)
+    product_id = Column(String, primary_key=True, default=str(uuid.uuid4))
     product_name = Column(String(50), nullable=False)
+    product_type = Column(String(50), nullable=False)
     product_status = Column(Boolean, default=True)  # True = available, False = not available
     product_prices = Column(JSON, nullable=False)   # List of prices (up to 3 options)
     product_options = Column(JSON, nullable=False)  # List of options (up to 3, like sizes or flavors)
+
+    def __init__(self, product_name,product_type ,product_status, product_prices, product_options):
+        # self.product_id =  uuid.
+        self.product_name=product_name
+        self.product_type=product_type
+        self.product_status=product_status
+        self.product_prices=product_prices
+        self.product_options=product_options
 
     def __repr__(self):
         return (f"<Product(product_name={self.product_name}, "
@@ -82,11 +92,11 @@ class DBManager():
     def create_all_tables(self):
         self.Base.metadata.create_all(bind=self.engine)
     
-    def add_user(self, uid, password):
+    def add_user(self, uid, password, type='customer'):
         try:
             session = self.Session()
         
-            session.add(User(uid, password))
+            session.add(User(uid, password, type))
             session.commit()
             session.close()
             print('successfully added')
@@ -113,7 +123,7 @@ class DBManager():
         
         return flag
 
-    def find_user_by_uid(self, uid):
+    def find_user_by_uid(self, uid): #'admin'
         
         session = self.Session()
         
@@ -122,7 +132,48 @@ class DBManager():
         session.close()
         return user
     
+    def find_users_by_type(self, type='customer'):
+        session = self.Session()
 
+        users = session.query(User).filter(User.user_type == type).all()
+
+        session.close()
+        return users
+
+    def add_product(self, product_name, product_type, product_prices, product_options, product_status = True):
+        # product_id = Column(Integer, primary_key=True, autoincrement=True)
+        # product_name = Column(String(50), nullable=False)
+        # product_status = Column(Boolean, default=True)  # True = available, False = not available
+        # product_prices = Column(JSON, nullable=False)   # List of prices (up to 3 options)
+        # product_options
+        session = self.Session()
+        try:
+            
+            session.add(Product( product_name, product_type, product_status, product_prices, product_options))
+            session.commit()
+            session.close()
+            print('successfully added')
+            return True
+        except:
+            session.rollback()
+            return False
+    def fetch_product_by_type(self, type):
+        session = self.Session()
+
+        products = session.query(Product).filter(Product.product_type == type).all()
+
+        session.close()
+        return products
+    def fetch_product_by_name(self, name):
+
+        session = self.Session()
+        products = session.query(Product).filter(Product.product_name == name).all()
+
+        session.close()
+        return products
+    
+    def update_product_by_name(self, name, product_status):
+        pass
 # DBM = DBManager(base=Base)
 # session = DBM.Session()
 # users= session.query(User).all()
