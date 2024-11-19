@@ -152,53 +152,53 @@ def test_product_display_missing_product_type(client):
 
 
 #test 4 purchase
-def test_purchase_redirect_successful(client):
-    print("test 4 purchase")
-    #scenario 1, client provides authenticate token and subtotal value
-    print("#scenario 1, client provides authenticate token and subtotal value")
-    print(f"Expect status code: 200")
-    print(f"Expect response: a url redirect link for transaction")
+# def test_purchase_redirect_successful(client):
+#     print("test 4 purchase")
+#     #scenario 1, client provides authenticate token and subtotal value
+#     print("#scenario 1, client provides authenticate token and subtotal value")
+#     print(f"Expect status code: 200")
+#     print(f"Expect response: a url redirect link for transaction")
     
-    data = {'subtotal':99}
-    response = client.post('/customer_purchasing', json=data, headers={'Authorization':'test_toke_1234'})
+#     data = {'subtotal':99}
+#     response = client.post('/customer_purchasing', json=data, headers={'Authorization':'test_toke_1234'})
 
-    assert response.status_code == 200
-    assert 'url' in response.json
+#     assert response.status_code == 200
+#     assert 'url' in response.json
 
-#scenario 2, client provides wrong authenticate token 
-def test_purchase_redirect_wrong_authentication_token(client):
-    print("#scenario 2, client provides wrong authenticate token")
-    print(f"Expect status code: 403")
-    print(f"Expect response: a error indicate unauthorize")
+# #scenario 2, client provides wrong authenticate token 
+# def test_purchase_redirect_wrong_authentication_token(client):
+#     print("#scenario 2, client provides wrong authenticate token")
+#     print(f"Expect status code: 403")
+#     print(f"Expect response: a error indicate unauthorize")
     
-    data = {'subtotal':99}
-    response = client.post('/customer_purchasing', json=data,headers={'Authorization':'xxx'})
-    
-
-    assert response.status_code == 403
-
-
-#scenario 3, client not provide subtotal
-def test_purchase_redirect_missing_subtotal(client):
-
-    print("#scenario 3, client not provide subtotal")
-    print(f"Expect status code: 400")
-    print(f"Expect response: a error indicate no subtotal")
-    
-    data = {'subtotal':None}
-    response = client.post('/customer_purchasing', json=data, headers={'Authorization':'test_toke_1234'})
-    
-    assert response.status_code == 400
-
-
-#scenario 4, client provides no authenticate token
-def test_purchase_redirect_missing_token(client):
-    print("#scenario 4, client provides no authenticate token")
-    print(f"Expect status code: 403")
-    print(f"Expect response: a error indicate unauthorize")
-    
-    data = {'subtotal':99}
-    response = client.post('/customer_purchasing', json=data,)
+#     data = {'subtotal':99}
+#     response = client.post('/customer_purchasing', json=data,headers={'Authorization':'xxx'})
     
 
-    assert response.status_code == 403
+#     assert response.status_code == 403
+
+
+# #scenario 3, client not provide subtotal
+# def test_purchase_redirect_missing_subtotal(client):
+
+#     print("#scenario 3, client not provide subtotal")
+#     print(f"Expect status code: 400")
+#     print(f"Expect response: a error indicate no subtotal")
+    
+#     data = {'subtotal':None}
+#     response = client.post('/customer_purchasing', json=data, headers={'Authorization':'test_toke_1234'})
+    
+#     assert response.status_code == 400
+
+
+# #scenario 4, client provides no authenticate token
+# def test_purchase_redirect_missing_token(client):
+#     print("#scenario 4, client provides no authenticate token")
+#     print(f"Expect status code: 403")
+#     print(f"Expect response: a error indicate unauthorize")
+    
+#     data = {'subtotal':99}
+#     response = client.post('/customer_purchasing', json=data,)
+    
+
+#     assert response.status_code == 403

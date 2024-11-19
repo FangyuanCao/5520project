@@ -65,16 +65,23 @@ class Product(Base):
 class PurchaseHistory(Base):
     __tablename__ = 'purchase_history'
     
-    id = Column(Integer, primary_key=True)
-    purchase_product = Column(String(50), nullable=False)  # Name of the purchased product
-    purchase_options = Column(String(50), nullable=True)   # Options like size or alternative flavor
+    id = Column(String, primary_key=True, default=str(uuid.uuid4))
+    purchase_product = Column(JSON, nullable=False)  # Name of the purchased product
+    purchase_options = Column(JSON, nullable=True)   # Options like size or alternative flavor
     price = Column(Float, nullable=False)                  # Price to be paid
     transaction_status = Column(Boolean, default=False)    # Payment received or not
     cooking_process = Column(Enum(CookingProcess), default=CookingProcess.ORDER_PLACED)  # Cooking process stage
-    uid = Column(Integer, ForeignKey('Users.uid'), nullable=False)  # Foreign key to user
+    uid = Column(String, ForeignKey('Users.uid'), nullable=False)  # Foreign key to user
 
     # Relationship to User
     # user = relationship("Users", back_populates="purchases")
+    def __init__(self,purchase_product,purchase_options,price,uid,transaction_status):
+        self.purchase_product=purchase_product
+        self.purchase_options=purchase_options
+        self.price=price
+        self.uid = uid
+        self.transaction_status=transaction_status
+
 
     def __repr__(self):
         return (f"<PurchaseHistory(purchase_product={self.purchase_product}, "
@@ -164,6 +171,8 @@ class DBManager():
 
         session.close()
         return products
+    
+    
     def fetch_product_by_name(self, name):
 
         session = self.Session()
@@ -171,9 +180,60 @@ class DBManager():
 
         session.close()
         return products
-    
-    def update_product_by_name(self, name, product_status):
+    def delete_product_by_name(self, name):
+        session = self.Session()
+        product = session.query(Product).filter_by(name=name).first()
+        session.delete(product)
+
+        session.commit()
+        session.close()
         pass
+    # def update_product_by_name(self, name, product_status):
+    #     pass
+
+    def add_transaction_for_user(self, uid, product_names, purchase_options, subtotal, transaction_status):
+        session = self.Session()
+
+        user = session.query(User).filter(User.uid==uid).first()
+
+        session.add(PurchaseHistory(
+            purchase_product=product_names,
+            purchase_options=purchase_options,
+            price=subtotal,
+            uid = uid,#user.uid,
+            transaction_status=transaction_status
+        ))
+        session.commit()
+        session.close()
+
+
+        pass
+
+    def all_transactions(self):
+        session = self.Session()
+        ph = session.query(PurchaseHistory).all()
+        session.close()
+
+        return ph
+    
+    def transaction_for_user(self,uid):
+        session = self.Session()
+        ph = session.query(PurchaseHistory).filter(PurchaseHistory.uid==uid).all()
+        session.close()
+
+        return ph
+    
+    def update_transaction(self, history_id, status):
+        session = self.Session()
+        session.query(PurchaseHistory).filter(PurchaseHistory.id==history_id).update({"transaction_status":status})
+        session.commit()
+        session.close()
+
+    def update_cooking_process(self, history_id, cooking_process):
+        session = self.Session()
+        session.query(PurchaseHistory).filter(PurchaseHistory.id==history_id).update({"cooking_process":cooking_process})
+        session.commit()
+        session.close()
 # DBM = DBManager(base=Base)
 # session = DBM.Session()
 # users= session.query(User).all()

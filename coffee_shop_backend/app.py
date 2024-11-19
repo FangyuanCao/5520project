@@ -137,45 +137,93 @@ def get_products():
 
     print(f"received fetch product request with product type {type} with number {number}")
 
-    product=[]
-    for item in fake_product_list:
-        if item['type'] == type:
-            product.append(item)
+    products = DBM.fetch_product_by_type(type)
+
+    product_list=[]
+    for p in products:
+        product_list.append(
+            {
+                'name':p.product_name,
+                'type':p.product_type,
+                'price':p.product_prices,
+                'options':p.product_options,
+                'status':p.product_status,
+            }
+        )
+
+    # product=[]
+    # for item in fake_product_list:
+    #     if item['type'] == type:
+    #         product.append(item)
 
     return jsonify({
-        "product_list": product[:number]
+        "product_list": product_list[:number]
     })
 
 @app.route("/update_products", methods=["POST"])
 def update_products():
 
-    id = request.json.get('id')
+    # id = request.json.get('id')
     name = request.json.get('name')
     type = request.json.get('type')
     price = request.json.get('price')
     options = request.json.get('options')
     status = request.json.get('status')
 
-
     print(f"received to update a product with product id {id} name {name} type {type} price {str(price)} options {str(options)} status {str(status)}")
+    DBM.add_product(product_name=name, product_type=type, product_prices=price, product_options=options,product_status=status)
 
-
+    
     #perform update based on id
 
     return jsonify({'status':'complete'})
 
+@app.route("/delete_product",methods=["POST"])
+def delete_product():
+    name = request.json.get('name')
+
+    DBM.delete_product_by_name(name)
+    
+    return jsonify({'status':'complete'})
+
+
 @app.route("/customer_purchasing", methods=["POST"])
 @token_required
 def purchase(uid):
-    subtotal = request.json.get('subtotal')    
+
+    products = request.json.get('products')  
+    options = request.json.get('options')    
+    subtotal = request.json.get('subtotal') 
+    
 
     if not subtotal:
         return jsonify({'status':'no subtotal'}), 400
     
     print(f"customer {uid} requests to purchase for subtotal of {subtotal}")
     #execute
+    DBM.add_transaction_for_user(uid=uid,product_names=products,purchase_options=options,subtotal=subtotal,transaction_status=False)
 
     return jsonify({'url':'test_url'})
+
+
+@app.route("/all_transactions", methods=["POST"])
+@token_required
+def all_transactions(uid):
+    purchase_hist=DBM.all_transactions()
+
+    PH=[]
+    for ph in purchase_hist:
+        PH.append(
+            {
+                'id':ph.id,
+                'uid':ph.uid,
+                'products':ph.purchase_product,
+                'options':ph.purchase_options,
+                'transaction_status':ph.transaction_status,
+                'cooking_process':ph.cooking_process,
+            }
+        )
+    return jsonify({'transactions':PH})
 
 if __name__ == "__main__":
     
