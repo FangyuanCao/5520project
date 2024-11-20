@@ -27,7 +27,7 @@ def test_registration_success(client):
     print("# scenario 1, user provides complete username and password, the function expect to return response with 200")
     print(f"Expected status code: 200")
     print(f"Expected response: {str({'status':'complete'})}")
-    data = {'user_name':'food@mail.com','password':123}
+    data = {'user_name':'food@mail.com','password':123, 'user_type':'customer'}
     response = client.post('/registration',json=data)
     
     assert response.status_code == 200
@@ -58,7 +58,7 @@ def test_login_success(client):
     print(f"Expected response: an authentication token")
 
 
-    data = {'user_name':'food@mail.com','password':123}
+    data = {'user_name':'food@mail.com','password':123, 'user_type':'customer'}
     response = client.post('/login', json=data)
 
     assert response.status_code == 200
