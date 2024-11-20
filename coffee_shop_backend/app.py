@@ -170,7 +170,7 @@ def update_products():
     options = request.json.get('options')
     status = request.json.get('status')
 
-    print(f"received to update a product with product id {id} name {name} type {type} price {str(price)} options {str(options)} status {str(status)}")
+    print(f"received to update a product with product name {name} type {type} price {str(price)} options {str(options)} status {str(status)}")
     DBM.add_product(product_name=name, product_type=type, product_prices=price, product_options=options,product_status=status)
 
     
