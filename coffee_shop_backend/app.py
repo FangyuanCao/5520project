@@ -34,6 +34,9 @@ def handle_registration():
     uid = request.json.get('user_name')
     password = request.json.get('password')
 
+
+    user_type = request.json.get('user_type')
+
     if uid and password:
         password = str(password)
         print(f"received registration from {uid} with password {password}")
@@ -43,7 +46,7 @@ def handle_registration():
 
         hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
 
-        DBM.add_user(uid = uid, password= hashed_password)
+        DBM.add_user(uid = uid, password= hashed_password, type=user_type)
 
         return jsonify({'status':'complete'})
     else:
@@ -79,6 +82,8 @@ def handle_user_login():
     uid = request.json.get('user_name')
     password = request.json.get('password')
 
+    user_type = request.json.get('user_type')
+
     print(f"received login request from {uid} with password {password}")
 
     # authentication process
@@ -87,11 +92,15 @@ def handle_user_login():
 
         password = str(password)
         print(f"login request {uid}")
-        user = DBM.find_user_by_uid(uid=uid)
+        user = DBM.find_user_by_uid_and_type(uid=uid,user_type=user_type)
+        print(user)
         if user:
             stored_hashed_password = user.password
             if stored_hashed_password and bcrypt.checkpw(password.encode('utf-8'), stored_hashed_password):
                 server_auth = secrets.token_urlsafe(16)
+
+                DBM.delete_login_session_uid(uid=uid)
+                DBM.add_login_session(token=server_auth,uid=uid)
 
                 return jsonify({'status':'complete','authentication':server_auth})
         
@@ -113,9 +122,10 @@ def token_required(f):
             return jsonify({'status':'no authorization token!'}), 403
         
         # verify with DB
-        valid_token = 'test_toke_1234'
-        if token == valid_token:
-            uid = 'test'
+        uid = DBM.verify_login_session(token)
+        # valid_token = 'test_toke_1234'
+        if uid:
+            pass
         #
         else:
             return jsonify({'status':'authorization token incorrect!'}), 403
@@ -171,12 +181,12 @@ def update_products():
     status = request.json.get('status')
 
     print(f"received to update a product with product name {name} type {type} price {str(price)} options {str(options)} status {str(status)}")
-    DBM.add_product(product_name=name, product_type=type, product_prices=price, product_options=options,product_status=status)
+    update_status = DBM.add_product(product_name=name, product_type=type, product_prices=price, product_options=options,product_status=status)
 
     
     #perform update based on id
 
-    return jsonify({'status':'complete'})
+    return jsonify({'status':update_status})
 
 @app.route("/delete_product",methods=["POST"])
 def delete_product():
