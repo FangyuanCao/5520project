@@ -12,6 +12,7 @@ import Foot from '../components/Foot';
 import Submenu from '../components/SubMenu';
 import Discount from '../components/Discount';
 import Mainlayout from '../components/manage-components/Mainlayout';
+import Upload from '../components/upload';
 
 const PrivateRoute = ({ element, isAuthenticated }) => {
   return isAuthenticated ? element : <Navigate to="/login" replace />;
@@ -37,6 +38,7 @@ const AppRouter = () => {
         <Route path="/SignUp" element={<><TitleBar /><SignUp /><Foot /></>} />
         <Route path="/SubMenu/:category" element={<><TitleBar /><Submenu /><Foot /></>} /> {/* 更新了路径 */}
         <Route path="/Discount" element={<><TitleBar /><Discount /><Foot /></>} />
+        <Route path="/upload" element={<><TitleBar /><Upload /><Foot /></>} />
 
         {/* 仅在 /admin/* 路径下加载 Mainlayout */}
         <Route 
