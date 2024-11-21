@@ -34,7 +34,11 @@ function TitleBar({addToCart}) {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
+  const removeItem = (id) => {
+    const updatedCartItems = cartItems.filter(item => item.id !== id);
+    setCartItems(updatedCartItems);
+    localStorage.setItem('shoppingCart', JSON.stringify(updatedCartItems));
+  };
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
   return (
@@ -87,12 +91,12 @@ function TitleBar({addToCart}) {
                             ml:"2.5%",
                             mt:"2%" }} >
                              {cartItems.length > 0 ? (
-                            cartItems.map((item, index) => (
-                            <Box key={index} display="flex" justifyContent="space-between" alignItems="center"  style={{border:'1px solid #ccc',padding:'10px',margin:'10px 0',backgroundColor : '#a1887f'}}>
+                            cartItems.map((item) => (
+                            <Box key={item.id} display="flex" justifyContent="space-between" alignItems="center"  style={{border:'1px solid #ccc',padding:'10px',margin:'10px 0',backgroundColor : '#a1887f'}}>
                             <Typography>{item.title}</Typography>
                             <Typography>{item.description}</Typography>
                             <Button variant="text" color="black">Edit</Button>
-                            <Button variant="text" color="black">Remove</Button>
+                            <Button variant="text" color="black"  onClick={() => removeItem(item.id)}>Remove</Button>
                             <Divider />
                             </Box>
                             

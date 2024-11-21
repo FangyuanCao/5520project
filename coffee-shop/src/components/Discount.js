@@ -6,9 +6,9 @@ import TitleBar from './TitleBar';
 const Discount = () => {
   const navigate = useNavigate();
   const rewards = [
-    { title: 'Reward 1', description: 'Description 1', image: 'reward1.png' },
-    { title: 'Reward 2', description: 'Description 2', image: 'reward2.png' },
-    { title: 'Reward 3', description: 'Description 3', image: 'reward3.png' },
+    { id: 1,title: 'Reward 1', description: 'Description 1', image: 'reward1.png' },
+    { id: 2,title: 'Reward 2', description: 'Description 2', image: 'reward2.png' },
+    { id: 3,title: 'Reward 3', description: 'Description 3', image: 'reward3.png' },
   ];
   if (!localStorage.getItem('shoppingCart')) {
     localStorage.setItem('shoppingCart', JSON.stringify([]));
