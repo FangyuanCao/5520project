@@ -10,28 +10,27 @@ import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import {useNavigate} from 'react-router-dom';
+import{useEffect} from 'react'
 import Popover from '@mui/material/Popover';
 import Divider from '@mui/material/Divider';
 import { ListItem } from '@mui/material';
 
-const items = [
-  {id :1, name:"items1", price :"$1.8"},
-  {id :2, name:"items2", price:"$1.4"}
-  ]
-
-function TitleBar() {
+function TitleBar({addToCart}) {
   const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [cartItems, setCartItems] = React.useState([]);
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
+  useEffect(() => {
+    const cart = JSON.parse(localStorage.getItem('shoppingCart')) || [];
+    setCartItems(cart);
+  }, []);
+
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -66,7 +65,7 @@ function TitleBar() {
           <Button color="white" onClick={() => navigate('/FAQs')} >FAQs</Button>
           </Box>
           <Button color="white" onClick={() => navigate('/login')} >Login</Button>
-          <Button aria-describedby={id} variant="text" color="white" onClick={handleClick}>
+          <Button aria-describedby={id} variant="text" color="white"  onClick={(event) => setAnchorEl(event.currentTarget)}>
             Shopping Cart
           </Button>
           <Popover
@@ -80,21 +79,31 @@ function TitleBar() {
           }}
           >
             <Box>
-                        {items.map((items) => (
-                          <Box key={items.id}  
-                          sx={{ bgcolor : 'primary.main',
+                        
+                          <Box  
+                          sx={{ 
                             borderRadius : 2,
                             width:"95%",
                             ml:"2.5%",
                             mt:"2%" }} >
-                            <Typography sx={{ p:2, fontSize:"25px"}}>{items.name}</Typography>
-                            <Box>
-                              <Divider />
-                              <Button variant="text" color="black">Edit</Button>
-                              <Button variant="text" color="black">Remove</Button>
+                             {cartItems.length > 0 ? (
+                            cartItems.map((item, index) => (
+                            <Box key={index} display="flex" justifyContent="space-between" alignItems="center"  style={{border:'1px solid #ccc',padding:'10px',margin:'10px 0',backgroundColor : '#a1887f'}}>
+                            <Typography>{item.title}</Typography>
+                            <Typography>{item.description}</Typography>
+                            <Button variant="text" color="black">Edit</Button>
+                            <Button variant="text" color="black">Remove</Button>
+                            <Divider />
                             </Box>
+                            
+                              ))
+                             ) : (
+                               <Typography>No items in cart</Typography>
+                             )}
+                            
+                           
                           </Box>
-                        ))}
+                        
             </Box>
             <Typography sx={{ p: 2, fontSize:"25px" }}>Total:</Typography>
             <Button variant="contained" sx={{width:400, height: 50,  color: '#5d4037', fontSize: "30px"}}>Checkout</Button>

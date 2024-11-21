@@ -2,6 +2,7 @@ import React from 'react';
 import { Grid, Box, Typography, Button, Paper } from '@mui/material';
 import coffee from "./picture/coffee.jpg";
 import {useNavigate} from 'react-router-dom';
+import TitleBar from './TitleBar';
 const Discount = () => {
   const navigate = useNavigate();
   const rewards = [
@@ -9,6 +10,15 @@ const Discount = () => {
     { title: 'Reward 2', description: 'Description 2', image: 'reward2.png' },
     { title: 'Reward 3', description: 'Description 3', image: 'reward3.png' },
   ];
+  if (!localStorage.getItem('shoppingCart')) {
+    localStorage.setItem('shoppingCart', JSON.stringify([]));
+  }
+  const addToCart = (reward) => {
+    let cart = JSON.parse(localStorage.getItem('shoppingCart'));
+    cart.push(reward);
+    localStorage.setItem('shoppingCart', JSON.stringify(cart));
+  };
+
 
   return (
     <Box sx={{ flexGrow: 1, padding: 4 }}>
@@ -68,7 +78,7 @@ const Discount = () => {
                 <Typography variant="body2" gutterBottom>
                   {reward.description}
                 </Typography>
-                <Button variant="contained" color="secondary">
+                <Button variant="contained" color="secondary" onClick={() => addToCart(reward)}>
                   Add to Cart
                 </Button>
               </Paper>
