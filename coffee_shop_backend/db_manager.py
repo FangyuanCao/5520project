@@ -49,7 +49,7 @@ class Product(Base):
     product_options = Column(JSON, nullable=False)  # List of options (up to 3, like sizes or flavors)
 
     def __init__(self, product_name,product_type ,product_status, product_prices, product_options):
-        # self.product_id =  uuid.
+        self.product_id =  product_name#uuid.
         self.product_name=product_name
         self.product_type=product_type
         self.product_status=product_status
@@ -65,7 +65,7 @@ class Product(Base):
 class PurchaseHistory(Base):
     __tablename__ = 'purchase_history'
     
-    id = Column(String, primary_key=True, default=str(uuid.uuid4))
+    id = Column(Integer, primary_key=True, autoincrement=True)
     purchase_product = Column(JSON, nullable=False)  # Name of the purchased product
     purchase_options = Column(JSON, nullable=True)   # Options like size or alternative flavor
     price = Column(Float, nullable=False)                  # Price to be paid
@@ -91,11 +91,12 @@ class PurchaseHistory(Base):
     
 class LoginSession(Base):
     __tablename__ = 'login_session'
-    id = Column(String, primary_key=True, default=str(uuid.uuid4))
+    id = Column(String, primary_key=True)
     session_token = Column(String, nullable=False)
     uid = Column(String, ForeignKey('Users.uid'), nullable=False)  # Foreign key to user
 
     def __init__(self, session_token, uid):
+        self.id=session_token+uid
         self.session_token=session_token
         self.uid=uid
 
@@ -213,6 +214,7 @@ class DBManager():
             print('successfully added')
             return True
         except:
+            print('unsuccessfully')
             session.rollback()
             return False
     def fetch_product_by_type(self, type):

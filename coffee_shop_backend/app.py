@@ -149,6 +149,7 @@ def get_products():
 
     products = DBM.fetch_product_by_type(type)
 
+    
     product_list=[]
     for p in products:
         product_list.append(
@@ -160,7 +161,7 @@ def get_products():
                 'status':p.product_status,
             }
         )
-
+    print(product_list)
     # product=[]
     # for item in fake_product_list:
     #     if item['type'] == type:
