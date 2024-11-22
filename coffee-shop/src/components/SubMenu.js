@@ -60,6 +60,24 @@ const SubMenu = () => {
     }
   };
 
+  if (!localStorage.getItem('shoppingCart')) {
+    localStorage.setItem('shoppingCart', JSON.stringify([]));
+  }
+  const addToCart = (product) => {
+    let cart = JSON.parse(localStorage.getItem('shoppingCart'));
+    const productWithPrice = {
+      ...product,
+      selectedSize,
+      price
+    };
+    delete productWithPrice.options;
+    cart.push(productWithPrice);
+    localStorage.setItem('shoppingCart', JSON.stringify(cart));
+    window.location.reload();
+    
+
+  };
+
   return (
     <Container style={{ maxWidth: '100%', margin: 'auto auto' }}>
       <Button variant="text" onClick={() => navigate('/Menu')}>Back to Categories</Button>
@@ -115,7 +133,7 @@ const SubMenu = () => {
               helperText="Please select your size"
             >
               {selectedProduct.options.map((option, index) => (
-                <MenuItem key={index} value={option}>
+                <MenuItem key={index} value={option} onClick={handleSizeChange}>
                   {option}
                 </MenuItem>
               ))}
@@ -133,7 +151,7 @@ const SubMenu = () => {
           </DialogContent>
           <DialogActions>
             <Button onClick={handleCloseDialog}>Cancel</Button>
-            <Button variant="contained" color="primary">Add to Cart</Button>
+            <Button variant="contained" color="primary"  onClick={() => addToCart(selectedProduct)}>Add to Cart</Button>
           </DialogActions>
         </Dialog>
       )}

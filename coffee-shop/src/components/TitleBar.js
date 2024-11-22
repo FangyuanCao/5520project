@@ -93,8 +93,9 @@ function TitleBar({addToCart}) {
                              {cartItems.length > 0 ? (
                             cartItems.map((item) => (
                             <Box key={item.id} display="flex" justifyContent="space-between" alignItems="center"  style={{border:'1px solid #ccc',padding:'10px',margin:'10px 0',backgroundColor : '#a1887f'}}>
-                            <Typography>{item.title}</Typography>
-                            <Typography>{item.description}</Typography>
+                            <Typography>{item.name}</Typography>
+                            <Typography>{item.selectedSize}</Typography>
+                            <Typography>{item.price}</Typography>
                             <Button variant="text" color="black">Edit</Button>
                             <Button variant="text" color="black"  onClick={() => removeItem(item.id)}>Remove</Button>
                             <Divider />
