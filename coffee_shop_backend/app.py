@@ -133,6 +133,14 @@ def token_required(f):
         return f(uid, *args, **kwargs)
     return decorated
 
+@app.route("/all_customers", methods=["POST"])
+def get_all_customers_email():
+    users = DBM.find_users_by_type()
+    u_emails=[]
+    for u in users:
+        u_emails.append(u.uid)
+
+    return jsonify({"user_emails":u_emails})
 
 @app.route("/fetch_products", methods=["POST"])
 def get_products():
@@ -169,7 +177,8 @@ def get_products():
     return jsonify({
         "product_list": product_list[:number]
     })
-
+# @app.route("/fetch_product_by_name", methods=["POST"])
+# def get_product_by_name():
 @app.route("/update_products", methods=["POST"])
 def update_products():
 
