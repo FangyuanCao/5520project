@@ -41,6 +41,10 @@ function TitleBar({addToCart}) {
   };
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
+  const totalPrice = cartItems.reduce((total, item) => {
+    return total + item.price;
+  }, 0);
+
   return (
     //title 
     <AppBar position="static">
@@ -94,8 +98,8 @@ function TitleBar({addToCart}) {
                             cartItems.map((item) => (
                             <Box key={item.id} display="flex" justifyContent="space-between" alignItems="center"  style={{border:'1px solid #ccc',padding:'10px',margin:'10px 0',backgroundColor : '#a1887f'}}>
                             <Typography>{item.name}</Typography>
-                            <Typography>{item.selectedSize}</Typography>
-                            <Typography>{item.price}</Typography>
+                            <Typography>size:{item.selectedSize}</Typography>
+                            <Typography>${item.price}</Typography>
                             <Button variant="text" color="black">Edit</Button>
                             <Button variant="text" color="black"  onClick={() => removeItem(item.id)}>Remove</Button>
                             <Divider />
@@ -110,7 +114,7 @@ function TitleBar({addToCart}) {
                           </Box>
                         
             </Box>
-            <Typography sx={{ p: 2, fontSize:"25px" }}>Total:</Typography>
+            <Typography sx={{ p: 2, fontSize:"25px" }}>Total: ${totalPrice}</Typography>
             <Button variant="contained" sx={{width:400, height: 50,  color: '#5d4037', fontSize: "30px"}}>Checkout</Button>
           </Popover>
         </Toolbar>
