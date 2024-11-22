@@ -33,6 +33,7 @@ export default function LoginGrid() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [userType, setUserType] = useState('customer');
   const handleSignUp = async (event)=>{
     event.preventDefault();
     try {
@@ -45,6 +46,7 @@ export default function LoginGrid() {
         body: JSON.stringify({
           user_name: accountName,
           password: password,
+          user_type: userType
         }),
       });
       const data = await response.json();

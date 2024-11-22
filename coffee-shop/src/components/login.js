@@ -45,8 +45,11 @@ export default function  Login() {
       const data = await response.json();
       if (data.authentication) {
         localStorage.setItem('token', data.authentication);
+        localStorage.setItem('username', username);
         console.log('Token stored:', data.authentication);
-        navigate('/Discount');
+        //if (data.user_type === 'customer') {
+            navigate('/Discount');
+      //}
       } else {
         setDisplayAlert(true);
         console.error('Login failed:', data.status);

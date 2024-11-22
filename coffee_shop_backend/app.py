@@ -34,6 +34,9 @@ def handle_registration():
     uid = request.json.get('user_name')
     password = request.json.get('password')
 
+
+    user_type = request.json.get('user_type')
+
     if uid and password:
         password = str(password)
         print(f"received registration from {uid} with password {password}")
@@ -43,7 +46,7 @@ def handle_registration():
 
         hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
 
-        DBM.add_user(uid = uid, password= hashed_password)
+        DBM.add_user(uid = uid, password= hashed_password, type=user_type)
 
         return jsonify({'status':'complete'})
     else:
@@ -79,6 +82,8 @@ def handle_user_login():
     uid = request.json.get('user_name')
     password = request.json.get('password')
 
+    user_type = request.json.get('user_type')
+
     print(f"received login request from {uid} with password {password}")
 
     # authentication process
@@ -87,11 +92,15 @@ def handle_user_login():
 
         password = str(password)
         print(f"login request {uid}")
-        user = DBM.find_user_by_uid(uid=uid)
+        user = DBM.find_user_by_uid_and_type(uid=uid,user_type=user_type)
+        print(user)
         if user:
             stored_hashed_password = user.password
             if stored_hashed_password and bcrypt.checkpw(password.encode('utf-8'), stored_hashed_password):
                 server_auth = secrets.token_urlsafe(16)
+
+                DBM.delete_login_session_uid(uid=uid)
+                DBM.add_login_session(token=server_auth,uid=uid)
 
                 return jsonify({'status':'complete','authentication':server_auth})
         
@@ -113,9 +122,10 @@ def token_required(f):
             return jsonify({'status':'no authorization token!'}), 403
         
         # verify with DB
-        valid_token = 'test_toke_1234'
-        if token == valid_token:
-            uid = 'test'
+        uid = DBM.verify_login_session(token)
+        # valid_token = 'test_toke_1234'
+        if uid:
+            pass
         #
         else:
             return jsonify({'status':'authorization token incorrect!'}), 403
@@ -137,45 +147,93 @@ def get_products():
 
     print(f"received fetch product request with product type {type} with number {number}")
 
-    product=[]
-    for item in fake_product_list:
-        if item['type'] == type:
-            product.append(item)
+    products = DBM.fetch_product_by_type(type)
+
+    product_list=[]
+    for p in products:
+        product_list.append(
+            {
+                'name':p.product_name,
+                'type':p.product_type,
+                'price':p.product_prices,
+                'options':p.product_options,
+                'status':p.product_status,
+            }
+        )
+
+    # product=[]
+    # for item in fake_product_list:
+    #     if item['type'] == type:
+    #         product.append(item)
 
     return jsonify({
-        "product_list": product[:number]
+        "product_list": product_list[:number]
     })
 
 @app.route("/update_products", methods=["POST"])
 def update_products():
 
-    id = request.json.get('id')
+    # id = request.json.get('id')
     name = request.json.get('name')
     type = request.json.get('type')
     price = request.json.get('price')
     options = request.json.get('options')
     status = request.json.get('status')
 
+    print(f"received to update a product with product name {name} type {type} price {str(price)} options {str(options)} status {str(status)}")
+    update_status = DBM.add_product(product_name=name, product_type=type, product_prices=price, product_options=options,product_status=status)
 
-    print(f"received to update a product with product id {id} name {name} type {type} price {str(price)} options {str(options)} status {str(status)}")
-
-
+    
     #perform update based on id
 
+    return jsonify({'status':update_status})
+
+@app.route("/delete_product",methods=["POST"])
+def delete_product():
+    name = request.json.get('name')
+
+    DBM.delete_product_by_name(name)
+    
     return jsonify({'status':'complete'})
+
 
 @app.route("/customer_purchasing", methods=["POST"])
 @token_required
 def purchase(uid):
-    subtotal = request.json.get('subtotal')    
+
+    products = request.json.get('products')  
+    options = request.json.get('options')    
+    subtotal = request.json.get('subtotal') 
+    
 
     if not subtotal:
         return jsonify({'status':'no subtotal'}), 400
     
     print(f"customer {uid} requests to purchase for subtotal of {subtotal}")
     #execute
+    DBM.add_transaction_for_user(uid=uid,product_names=products,purchase_options=options,subtotal=subtotal,transaction_status=False)
 
     return jsonify({'url':'test_url'})
+
+
+@app.route("/all_transactions", methods=["POST"])
+@token_required
+def all_transactions(uid):
+    purchase_hist=DBM.all_transactions()
+
+    PH=[]
+    for ph in purchase_hist:
+        PH.append(
+            {
+                'id':ph.id,
+                'uid':ph.uid,
+                'products':ph.purchase_product,
+                'options':ph.purchase_options,
+                'transaction_status':ph.transaction_status,
+                'cooking_process':ph.cooking_process,
+            }
+        )
+    return jsonify({'transactions':PH})
 
 if __name__ == "__main__":
     

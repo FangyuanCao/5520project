@@ -18,19 +18,23 @@ const Menu = () => {
   };
 
   return (
-    <Grid container spacing={4} sx={{ padding: 4 }}>
-      <Grid item xs={12}>
-        <Typography
-          variant="h3"
-          textAlign="center"
-          sx={{
-            mb: 4,
-            fontWeight: "bold",
-            color: "#5d4037",
-          }}
-        >
-          Categories
-        </Typography>
+
+  
+    <Grid container spacing={2}>
+      <Grid item xs={12} container direction="column" alignItems="center" spacing={1}>
+        <Box sx={{
+          width: "100%",
+          height: 80,
+          bgcolor: 'primary.second',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          userSelect: 'none',
+        }}>
+          <Typography variant="h3" color='#5d4037' textAlign="center">
+            Categories
+          </Typography>
+        </Box>
       </Grid>
 
       {categories.map((category, index) => (

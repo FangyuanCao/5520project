@@ -28,7 +28,7 @@ class User(Base):
     def __init__(self, uid, password, type):
         self.uid = uid
         self.password = password
-        self.type=type
+        self.user_type=type
     
     def return_user_info(self):
         return {"uid":self.uid}
@@ -65,23 +65,43 @@ class Product(Base):
 class PurchaseHistory(Base):
     __tablename__ = 'purchase_history'
     
-    id = Column(Integer, primary_key=True)
-    purchase_product = Column(String(50), nullable=False)  # Name of the purchased product
-    purchase_options = Column(String(50), nullable=True)   # Options like size or alternative flavor
+    id = Column(String, primary_key=True, default=str(uuid.uuid4))
+    purchase_product = Column(JSON, nullable=False)  # Name of the purchased product
+    purchase_options = Column(JSON, nullable=True)   # Options like size or alternative flavor
     price = Column(Float, nullable=False)                  # Price to be paid
     transaction_status = Column(Boolean, default=False)    # Payment received or not
     cooking_process = Column(Enum(CookingProcess), default=CookingProcess.ORDER_PLACED)  # Cooking process stage
-    uid = Column(Integer, ForeignKey('Users.uid'), nullable=False)  # Foreign key to user
+    uid = Column(String, ForeignKey('Users.uid'), nullable=False)  # Foreign key to user
 
     # Relationship to User
     # user = relationship("Users", back_populates="purchases")
+    def __init__(self,purchase_product,purchase_options,price,uid,transaction_status):
+        self.purchase_product=purchase_product
+        self.purchase_options=purchase_options
+        self.price=price
+        self.uid = uid
+        self.transaction_status=transaction_status
+
 
     def __repr__(self):
         return (f"<PurchaseHistory(purchase_product={self.purchase_product}, "
                 f"purchase_options={self.purchase_options}, price={self.price}, "
                 f"transaction_status={'Received' if self.transaction_status else 'Pending'}, "
                 f"cooking_process={self.cooking_process}, uid={self.uid})>")
+    
+class LoginSession(Base):
+    __tablename__ = 'login_session'
+    id = Column(String, primary_key=True, default=str(uuid.uuid4))
+    session_token = Column(String, nullable=False)
+    uid = Column(String, ForeignKey('Users.uid'), nullable=False)  # Foreign key to user
 
+    def __init__(self, session_token, uid):
+        self.session_token=session_token
+        self.uid=uid
+
+    def __repr__(self):
+        return f"<LoginSession(session_token={self.session_token})>"
+    
 class DBManager():
     def __init__(self, base, addr="sqlite:///serverdb.db") -> None:
         self.Base = base #declarative_base()
@@ -139,6 +159,44 @@ class DBManager():
 
         session.close()
         return users
+    
+    def find_user_by_uid_and_type(self, uid, user_type='customer'): #'admin'
+        
+        session = self.Session()
+        
+        user = session.query(User).filter((User.uid==uid) & (User.user_type==user_type)).first()
+
+        session.close()
+        return user
+    
+    def add_login_session(self, token,uid):
+        session = self.Session()
+        session.add(LoginSession(session_token=token,uid=uid))
+        session.commit()
+        session.close()
+    
+    def delete_login_session(self, token):
+        session = self.Session()
+        loginsession = session.query(LoginSession).filter(LoginSession.session_token==token).first()
+        if loginsession:
+            session.delete(loginsession)
+        session.commit()
+        session.close()
+    def delete_login_session_uid(self, uid):
+        session = self.Session()
+        loginsession = session.query(LoginSession).filter(LoginSession.uid==uid).first()
+        if loginsession:
+            session.delete(loginsession)
+        session.commit()
+        session.close()
+    def verify_login_session(self,token):
+        session = self.Session()
+        loginsession = session.query(LoginSession).filter(LoginSession.session_token==token).first()
+        session.close()
+        if loginsession:
+            return loginsession.uid
+        else:
+            return None
 
     def add_product(self, product_name, product_type, product_prices, product_options, product_status = True):
         # product_id = Column(Integer, primary_key=True, autoincrement=True)
@@ -164,6 +222,8 @@ class DBManager():
 
         session.close()
         return products
+    
+    
     def fetch_product_by_name(self, name):
 
         session = self.Session()
@@ -171,12 +231,73 @@ class DBManager():
 
         session.close()
         return products
-    
-    def update_product_by_name(self, name, product_status):
+    def delete_product_by_name(self, name):
+        session = self.Session()
+        product = session.query(Product).filter(Product.product_name == name).first()
+        if product:
+            session.delete(product)
+
+        session.commit()
+        session.close()
         pass
+    # def update_product_by_name(self, name, product_status):
+    #     pass
+
+    def add_transaction_for_user(self, uid, product_names, purchase_options, subtotal, transaction_status):
+        session = self.Session()
+
+        user = session.query(User).filter(User.uid==uid).first()
+
+        session.add(PurchaseHistory(
+            purchase_product=product_names,
+            purchase_options=purchase_options,
+            price=subtotal,
+            uid = uid,#user.uid,
+            transaction_status=transaction_status
+        ))
+        session.commit()
+        session.close()
+
+
+        pass
+
+    def all_transactions(self):
+        session = self.Session()
+        ph = session.query(PurchaseHistory).all()
+        session.close()
+
+        return ph
+    
+    def transaction_for_user(self,uid):
+        session = self.Session()
+        ph = session.query(PurchaseHistory).filter(PurchaseHistory.uid==uid).all()
+        session.close()
+
+        return ph
+    
+    def update_transaction(self, history_id, status):
+        session = self.Session()
+        session.query(PurchaseHistory).filter(PurchaseHistory.id==history_id).update({"transaction_status":status})
+        session.commit()
+        session.close()
+
+    def update_cooking_process(self, history_id, cooking_process):
+        session = self.Session()
+        session.query(PurchaseHistory).filter(PurchaseHistory.id==history_id).update({"cooking_process":cooking_process})
+        session.commit()
+        session.close()
+
+
 # DBM = DBManager(base=Base)
+# DBM.add_user(uid='abc@a.cn',password='123',type='customer')
+
+
+
 # session = DBM.Session()
 # users= session.query(User).all()
 # session.close()
+# print(users[0].user_type)
 
-# print(users)
+# uu=DBM.find_user_by_uid_and_type(uid='abc@a.cn', user_type='customer')
+# print(uu)
+
