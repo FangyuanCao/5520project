@@ -40,6 +40,7 @@ export default function  Login() {
         body: JSON.stringify({
           user_name: username,
           password: password,
+          user_type: 'customer',
         }),
       });
       const data = await response.json();
