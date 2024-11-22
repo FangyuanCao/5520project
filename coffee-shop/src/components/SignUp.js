@@ -33,9 +33,8 @@ export default function LoginGrid() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [type,SetType] = useState('');
+  const [userType, setUserType] = useState('customer');
   const handleSignUp = async (event)=>{
-    const User_type = 'consumer';
     event.preventDefault();
     try {
       const response = await fetch(ApiUtil.API_REGISTRATION, {
@@ -47,7 +46,7 @@ export default function LoginGrid() {
         body: JSON.stringify({
           user_name: accountName,
           password: password,
-          type: User_type
+          user_type: userType
         }),
       });
       const data = await response.json();

@@ -6,9 +6,9 @@ import TitleBar from './TitleBar';
 const Discount = () => {
   const navigate = useNavigate();
   const rewards = [
-    { id: 1,title: 'Reward 1', description: 'Description 1', image: 'reward1.png' },
-    { id: 2,title: 'Reward 2', description: 'Description 2', image: 'reward2.png' },
-    { id: 3,title: 'Reward 3', description: 'Description 3', image: 'reward3.png' },
+    { id: 1,name: 'Free coffee 1', price: 0, image: 'reward1.png' },
+    { id: 2,name: 'Free coffee 2', price: 0, image: 'reward2.png' },
+    { id: 3,name: 'Free coffee 3', price: 0, image: 'reward3.png' },
   ];
   if (!localStorage.getItem('shoppingCart')) {
     localStorage.setItem('shoppingCart', JSON.stringify([]));
@@ -17,6 +17,7 @@ const Discount = () => {
     let cart = JSON.parse(localStorage.getItem('shoppingCart'));
     cart.push(reward);
     localStorage.setItem('shoppingCart', JSON.stringify(cart));
+    window.location.reload();
   };
 
 
@@ -54,8 +55,8 @@ const Discount = () => {
           Rewards & Offers
         </Typography>
         <Grid container spacing={2}>
-          {rewards.map((reward, index) => (
-            <Grid item xs={12} sm={4} key={index}>
+          {rewards.map((reward) => (
+            <Grid item xs={12} sm={4} key={reward.id}>
               <Paper
                 sx={{
                   padding: 2,
@@ -73,10 +74,10 @@ const Discount = () => {
                   src={coffee}
                 />
                 <Typography variant="h6" gutterBottom>
-                  {reward.title}
+                  {reward.name}
                 </Typography>
                 <Typography variant="body2" gutterBottom>
-                  {reward.description}
+                  $ {reward.price}
                 </Typography>
                 <Button variant="contained" color="secondary" onClick={() => addToCart(reward)}>
                   Add to Cart
