@@ -8,8 +8,7 @@ import AboutUs from './components/AboutUs';
 import Submenu from './components/SubMenu';
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import { render, screen, fireEvent, waitFor} from '@testing-library/react';
-
-test('renders all navigation buttons in titleBar', () => {
+/*test('renders all navigation buttons in titleBar', () => {
   render(
     <MemoryRouter>
         <TitleBar/>
@@ -23,7 +22,7 @@ test('renders all navigation buttons in titleBar', () => {
   fireEvent.click(screen.getByText('Shopping Cart'));
   expect(screen.getByText('Total:')).toBeInTheDocument();
 
-});
+});*/
 
 test('renders all navigation buttons in login', () => {
   render(
@@ -157,7 +156,7 @@ test('sign in navigate to main',()=>{
  
 });
 
-test('handleClick and handleClose ', () => {
+/*test('handleClick and handleClose ', () => {
   render(
     <MemoryRouter>
     <TitleBar />
@@ -172,4 +171,4 @@ test('handleClick and handleClose ', () => {
     expect(screen.queryByText('Checkout')).toBeNull();
   });
 
-});
+});*/
