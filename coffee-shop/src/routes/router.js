@@ -14,6 +14,7 @@ import Discount from '../components/Discount';
 import Mainlayout from '../components/manage-components/Mainlayout';
 import Upload from '../components/upload';
 import Admin from '../components/manage-components/AdminManage';
+import Member from '../components/manage-components/MembershipManage'
 const PrivateRoute = ({ element, isAuthenticated }) => {
   return isAuthenticated ? element : <Navigate to="/login" replace />;
 };
@@ -40,6 +41,7 @@ const AppRouter = () => {
         <Route path="/Discount" element={<><TitleBar /><Discount /><Foot /></>} />
         <Route path="/upload" element={<><TitleBar /><Upload /><Foot /></>} />
         <Route path="/admin" element={<><TitleBar />< Admin/><Foot /></>} />
+        <Route path="/Member" element={<><TitleBar />< Member/><Foot /></>} />
 
         {/* 仅在 /admin/* 路径下加载 Mainlayout */}
         <Route 
