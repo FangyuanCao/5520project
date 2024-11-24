@@ -8,4 +8,5 @@ export default class ApiUtil {
     static API_UPDATE_PRODUCTS = ApiUtil.URL_IP + '/update_products';
     static API_CUSTOMER_PURCHASING = ApiUtil.URL_IP + '/customer_purchasing';
     static API_DELETE_USER = ApiUtil.URL_IP + '/delete_user';
+    static API_FETCH_ALL_CUSTOMERS = ApiUtil.URL_IP +'/all_customers'
 }
