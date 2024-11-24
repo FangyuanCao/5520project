@@ -102,7 +102,7 @@ def handle_user_login():
                 DBM.delete_login_session_uid(uid=uid)
                 DBM.add_login_session(token=server_auth,uid=uid)
 
-                return jsonify({'status':'complete','authentication':server_auth})
+                return jsonify({'status':'complete','authentication':server_auth,'login_type':user.user_type})
         
     ##########################
 
