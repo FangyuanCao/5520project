@@ -20,6 +20,7 @@ const SubMenu = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [selectedSize, setSelectedSize] = useState('');
   const [price, setPrice] = useState(0);
+  const [quantity, setQuantity] = useState(1);
   const { category } = useParams();
   const navigate = useNavigate();
 
@@ -38,6 +39,20 @@ const SubMenu = () => {
       .then((data) => setProducts(data.product_list || []))
       .catch((error) => console.error('Error fetching products:', error));
   }, [category]);
+  useEffect(() => {
+    if (selectedProduct) {
+      setSelectedSize(selectedProduct.selectedSize || '');
+      setQuantity(selectedProduct.quantity || 1);
+      const sizeIndex = selectedProduct.options.indexOf(selectedProduct.selectedSize);
+      if (sizeIndex !== -1) {
+        setPrice(selectedProduct.price[sizeIndex] * (selectedProduct.quantity || 1));
+      }
+    }
+  }, [selectedProduct]);
+
+  if (!localStorage.getItem('shoppingCart')) {
+    localStorage.setItem('shoppingCart', JSON.stringify([]));
+  }
 
   const handleOpenDialog = (product) => {
     setSelectedProduct(product);
@@ -55,7 +70,16 @@ const SubMenu = () => {
 
     const sizeIndex = selectedProduct.options.indexOf(size);
     if (sizeIndex !== -1) {
-      setPrice(selectedProduct.price[sizeIndex]);
+      setPrice(selectedProduct.price[sizeIndex] * quantity);
+    }
+  };
+  const handleQuantityChange = (event) => {
+    const qty = event.target.value;
+    setQuantity(qty);
+
+    const sizeIndex = selectedProduct.options.indexOf(selectedSize);
+    if (sizeIndex !== -1) {
+      setPrice(selectedProduct.price[sizeIndex] * qty);
     }
   };
 
@@ -157,6 +181,8 @@ const SubMenu = () => {
               label="Quantity"
               fullWidth
               margin="dense"
+              value={quantity}
+              onChange={handleQuantityChange}
               defaultValue={1}
             />
             <Typography variant="body1" color="text.secondary" sx={{ mt: 2 }}>
