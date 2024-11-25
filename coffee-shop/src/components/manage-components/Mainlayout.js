@@ -6,19 +6,31 @@ import MembershipManage from './MembershipManage';
 import AdminManage from './AdminManage';
 import OrderManage from './OrderManage';
 import Analytics from './Analytics';
+import Button from '@mui/material/Button';
+import {useNavigate} from 'react-router-dom';
 
 const drawerWidth = 240;
 
 const Mainlayout = () => {
+    const navigate = useNavigate();
     return (
         <div style={{ display: 'flex' }}>
             {/* 顶部导航栏 */}
             <AppBar position="fixed" style={{ zIndex: 1201, backgroundColor: '#3f51b5' }}>
                 <Toolbar>
                     <Typography variant="h6" noWrap>
-                        Admin Panel
+                       coffee shop Admin 
                     </Typography>
+                    <Box sx={{ flexGrow: 1 }} /> {/* 占据剩余空间 */}
+                    <Button 
+                     variant="h6"
+                     onClick={() => navigate('/')} 
+                     sx={{ mb: 2 }}
+                    >
+        Back to Main page
+      </Button>
                 </Toolbar>
+                
             </AppBar>
 
             {/* 左侧侧边栏 */}
@@ -36,7 +48,7 @@ const Mainlayout = () => {
                         <ListItemText primary="Membership Management" />
                     </ListItem>
                     <ListItem button component={Link} to="/admin/admins">
-                        <ListItemText primary="Admin Management" />
+                        <ListItemText primary="setup new admin" />
                     </ListItem>
                     <ListItem button component={Link} to="/admin/orders">
                         <ListItemText primary="Order Management" />

@@ -50,13 +50,6 @@ const OrderManage = () => {
                                     >
                                         Ship
                                     </Button>
-                                    <Button 
-                                        variant="contained" 
-                                        color="secondary" 
-                                        onClick={() => handleDelete(order.id)}
-                                    >
-                                        Delete
-                                    </Button>
                                 </TableCell>
                             </TableRow>
                         ))}
