@@ -48,6 +48,7 @@ export default function  Login() {
         localStorage.setItem('token', data.authentication);
         localStorage.setItem('username', username);
         console.log('Token stored:', data.authentication);
+        // console.log(data);
         //if (data.user_type === 'customer') {
             navigate('/Discount');
             window.location.reload();

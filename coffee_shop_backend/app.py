@@ -102,7 +102,7 @@ def handle_user_login():
                 DBM.delete_login_session_uid(uid=uid)
                 DBM.add_login_session(token=server_auth,uid=uid)
 
-                return jsonify({'status':'complete','authentication':server_auth,'login_type':user.user_type})
+                return jsonify({'status':'complete','authentication':server_auth,'user_type':user.user_type})
         
     ##########################
 
@@ -161,6 +161,7 @@ def get_products():
     for p in products:
         product_list.append(
             {
+                'id':p.product_id,
                 'name':p.product_name,
                 'type':p.product_type,
                 'price':p.product_prices,
@@ -211,7 +212,7 @@ def delete_product():
 def purchase(uid):
 
     products = request.json.get('products')  
-    options = request.json.get('options')    
+    # options = request.json.get('options')    
     subtotal = request.json.get('subtotal') 
     
 
@@ -219,8 +220,9 @@ def purchase(uid):
         return jsonify({'status':'no subtotal'}), 400
     
     print(f"customer {uid} requests to purchase for subtotal of {subtotal}")
+    print(f"{products}")
     #execute
-    DBM.add_transaction_for_user(uid=uid,product_names=products,purchase_options=options,subtotal=subtotal,transaction_status=False)
+    DBM.add_transaction_for_user(uid=uid,product_names=products,subtotal=subtotal,transaction_status=False)
 
     return jsonify({'url':'test_url'})
 
@@ -237,12 +239,20 @@ def all_transactions(uid):
                 'id':ph.id,
                 'uid':ph.uid,
                 'products':ph.purchase_product,
-                'options':ph.purchase_options,
+                # 'options':ph.purchase_options,
                 'transaction_status':ph.transaction_status,
                 'cooking_process':ph.cooking_process,
             }
         )
     return jsonify({'transactions':PH})
+
+@app.route("/update_transaction_cooking_process")
+def update_cooking_progress(uid):
+    id = request.json.get('order_id')  
+    cooking_progress = request.json.get('cooking_progress')  
+    DBM.update_cooking_process(id , cooking_progress)
+
+    return jsonify({'status':'complete'})
 
 if __name__ == "__main__":
     

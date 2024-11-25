@@ -55,6 +55,7 @@ const SubMenu = () => {
   }
 
   const handleOpenDialog = (product) => {
+    console.log(product);
     setSelectedProduct(product);
     setSelectedSize('');
     setPrice(0);
@@ -87,11 +88,15 @@ const SubMenu = () => {
     localStorage.setItem('shoppingCart', JSON.stringify([]));
   }
   const addToCart = (product) => {
+    console.log(selectedProduct);
+    console.log(localStorage.getItem('shoppingCart'));
+
     let cart = JSON.parse(localStorage.getItem('shoppingCart'));
     const productWithPrice = {
       ...product,
       selectedSize,
-      price
+      price,
+      quantity
     };
     delete productWithPrice.options;
     cart.push(productWithPrice);

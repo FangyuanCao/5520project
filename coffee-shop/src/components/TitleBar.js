@@ -14,6 +14,7 @@ import{useEffect,useState } from 'react'
 import Popover from '@mui/material/Popover';
 import Divider from '@mui/material/Divider';
 import { ListItem } from '@mui/material';
+import ApiUtil from '../Utils/ApiUtil';
 
 function TitleBar({addToCart}) {
   const navigate = useNavigate();
@@ -59,8 +60,9 @@ function TitleBar({addToCart}) {
     setUsername(null);
     navigate('/login');
   };
-  const removeItem = (id) => {
-    const updatedCartItems = cartItems.filter(item => item.id !== id);
+
+  const removeItem = (idx) => {
+    const updatedCartItems = cartItems.filter((item,index) => index !== idx);
     setCartItems(updatedCartItems);
     localStorage.setItem('shoppingCart', JSON.stringify(updatedCartItems));
   };
@@ -69,6 +71,52 @@ function TitleBar({addToCart}) {
   const totalPrice = cartItems.reduce((total, item) => {
     return total + item.price;
   }, 0);
+
+  // add place order function
+  const placeOrder = async ()=>{
+
+
+    const token = localStorage.getItem('token');
+    const cart = JSON.parse(localStorage.getItem('shoppingCart'));
+
+    if (cart && cart.length > 0) {
+      // // Print each item in the shopping cart
+      // cart.forEach((item, index) => {
+      //   console.log(`Item ${index + 1}:`, item);
+      // });
+      try{
+        const response = await fetch(ApiUtil.API_CUSTOMER_PURCHASING, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `${token}`
+          },
+          body: JSON.stringify({
+              'products':cart,
+              'subtotal':totalPrice,
+          }),
+        });
+        const data = await response.json();
+        if (data) {
+          console.log(data);
+          // localStorage.setItem('shoppingCart', []);
+          
+          // setCartItems([]);
+        } else {
+          
+          console.error('Login failed:', data.status);
+        }
+        console.log(data);
+
+        
+      } catch (error) {
+        console.error(' error', error);
+      }
+    } else {
+      console.log('Shopping cart is empty!');
+    }
+    
+  };
 
   return (
     //title 
@@ -149,13 +197,14 @@ function TitleBar({addToCart}) {
                             ml:"2.5%",
                             mt:"2%" }} >
                              {cartItems.length > 0 ? (
-                            cartItems.map((item) => (
-                            <Box key={item.id} display="flex" justifyContent="space-between" alignItems="center"  style={{border:'1px solid #ccc',padding:'10px',margin:'10px 0',backgroundColor : '#a1887f'}}>
+                            cartItems.map((item,index) => (
+                            <Box key={index+item.id+item.name+item.selectedSize} display="flex" justifyContent="space-between" alignItems="center"  style={{border:'1px solid #ccc',padding:'10px',margin:'10px 0',backgroundColor : '#a1887f'}}>
                             <Typography>{item.name}</Typography>
                             <Typography>size:{item.selectedSize}</Typography>
                             <Typography>${item.price}</Typography>
+                            <Typography>quantity:{item.quantity}</Typography>
                             <Button variant="text" color="black">Edit</Button>
-                            <Button variant="text" color="black"  onClick={() => removeItem(item.id)}>Remove</Button>
+                            <Button variant="text" color="black"  onClick={() => removeItem(index)}>Remove</Button>
                             <Divider />
                             </Box>
                             
@@ -169,7 +218,7 @@ function TitleBar({addToCart}) {
                         
             </Box>
             <Typography sx={{ p: 2, fontSize:"25px" }}>Total: ${totalPrice}</Typography>
-            <Button variant="contained" sx={{width:400, height: 50,  color: '#5d4037', fontSize: "30px"}}>Checkout</Button>
+            <Button variant="contained" sx={{width:400, height: 50,  color: '#5d4037', fontSize: "30px"}} onClick={() => placeOrder()}>Checkout</Button>
           </Popover>
         </Toolbar>
       </Container>

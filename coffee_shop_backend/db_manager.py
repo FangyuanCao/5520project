@@ -1,7 +1,7 @@
 import enum
 import uuid
 # from xmlrpc.client import Boolean
-from sqlalchemy import JSON, Float, create_engine, ForeignKey, Column, String, Integer, CHAR, Boolean, PickleType, Enum
+from sqlalchemy import JSON, UUID, Float, create_engine, ForeignKey, Column, String, Integer, CHAR, Boolean, PickleType, Enum
 # from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import declarative_base
 from sqlalchemy.orm import sessionmaker
@@ -41,7 +41,7 @@ class User(Base):
 class Product(Base):
     __tablename__ = 'product'
     
-    product_id = Column(String, primary_key=True, default=str(uuid.uuid4))
+    product_id = Column(String, primary_key=True, default=lambda: str(uuid.uuid4()))
     product_name = Column(String(50), nullable=False)
     product_type = Column(String(50), nullable=False)
     product_status = Column(Boolean, default=True)  # True = available, False = not available
@@ -65,9 +65,9 @@ class Product(Base):
 class PurchaseHistory(Base):
     __tablename__ = 'purchase_history'
     
-    id = Column(String, primary_key=True, default=str(uuid.uuid4))
+    id = Column(String, primary_key=True, default=lambda: str(uuid.uuid4()))
     purchase_product = Column(JSON, nullable=False)  # Name of the purchased product
-    purchase_options = Column(JSON, nullable=True)   # Options like size or alternative flavor
+    # purchase_options = Column(JSON, nullable=True)   # Options like size or alternative flavor
     price = Column(Float, nullable=False)                  # Price to be paid
     transaction_status = Column(Boolean, default=False)    # Payment received or not
     cooking_process = Column(Enum(CookingProcess), default=CookingProcess.ORDER_PLACED)  # Cooking process stage
@@ -75,9 +75,9 @@ class PurchaseHistory(Base):
 
     # Relationship to User
     # user = relationship("Users", back_populates="purchases")
-    def __init__(self,purchase_product,purchase_options,price,uid,transaction_status):
+    def __init__(self,purchase_product,price,uid,transaction_status):
         self.purchase_product=purchase_product
-        self.purchase_options=purchase_options
+        # self.purchase_options=purchase_options
         self.price=price
         self.uid = uid
         self.transaction_status=transaction_status
@@ -85,13 +85,14 @@ class PurchaseHistory(Base):
 
     def __repr__(self):
         return (f"<PurchaseHistory(purchase_product={self.purchase_product}, "
-                f"purchase_options={self.purchase_options}, price={self.price}, "
+                # f"purchase_options={self.purchase_options}, ""
+                f"price={self.price}, "
                 f"transaction_status={'Received' if self.transaction_status else 'Pending'}, "
                 f"cooking_process={self.cooking_process}, uid={self.uid})>")
     
 class LoginSession(Base):
     __tablename__ = 'login_session'
-    id = Column(String, primary_key=True, default=str(uuid.uuid4))
+    id = Column(String, primary_key=True, default=lambda: str(uuid.uuid4()))
     session_token = Column(String, nullable=False)
     uid = Column(String, ForeignKey('Users.uid'), nullable=False)  # Foreign key to user
 
@@ -243,14 +244,14 @@ class DBManager():
     # def update_product_by_name(self, name, product_status):
     #     pass
 
-    def add_transaction_for_user(self, uid, product_names, purchase_options, subtotal, transaction_status):
+    def add_transaction_for_user(self, uid, product_names, subtotal, transaction_status):
         session = self.Session()
 
         user = session.query(User).filter(User.uid==uid).first()
 
         session.add(PurchaseHistory(
             purchase_product=product_names,
-            purchase_options=purchase_options,
+            # purchase_options=purchase_options,
             price=subtotal,
             uid = uid,#user.uid,
             transaction_status=transaction_status
