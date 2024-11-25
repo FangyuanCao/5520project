@@ -50,6 +50,7 @@ export default function  Login() {
         console.log('Token stored:', data.authentication);
         //if (data.user_type === 'customer') {
             navigate('/Discount');
+            window.location.reload();
       //}
       } else {
         setDisplayAlert(true);
@@ -164,10 +165,10 @@ export default function  Login() {
                />
           </Box>
         </Grid>
-        <Grid size={12}   container justifyContent ='center'>
+        <Grid size={12} container justifyContent ='center'>
           <Box
           >
-            <Button   type="submit" variant="contained" sx={{width:400, height: 50,  color: '#5d4037', fontSize: "30px"}}>SIGN IN</Button>
+            <Button type="submit" variant="contained" sx={{width:400, height: 50,  color: '#5d4037', fontSize: "30px"}}>SIGN IN</Button>
           </Box>
         </Grid>
       </Grid>

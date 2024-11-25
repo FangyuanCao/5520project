@@ -10,7 +10,7 @@ import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import {useNavigate} from 'react-router-dom';
-import{useEffect} from 'react'
+import{useEffect,useState } from 'react'
 import Popover from '@mui/material/Popover';
 import Divider from '@mui/material/Divider';
 import { ListItem } from '@mui/material';
@@ -20,6 +20,8 @@ function TitleBar({addToCart}) {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [cartItems, setCartItems] = React.useState([]);
+  const [username, setUsername] = useState(null);
+  const [anchorElUser, setAnchorElUser] = useState(null);
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -29,10 +31,33 @@ function TitleBar({addToCart}) {
   useEffect(() => {
     const cart = JSON.parse(localStorage.getItem('shoppingCart')) || [];
     setCartItems(cart);
+  
+   const storedUsername = localStorage.getItem('username');
+   if (storedUsername) {
+     setUsername(storedUsername);
+  }
   }, []);
+    
+  const handleOpenUserMenu = (event) => {
+    setAnchorElUser(event.currentTarget);
+  };
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
+  };
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+  const handleLogin = (username) => {
+    setUsername(username);
+    localStorage.setItem('username', username);
+    navigate('/Discount'); 
+  };
+  
+  const handleLogout = () => {
+    localStorage.removeItem('username');
+    setUsername(null);
+    navigate('/login');
   };
   const removeItem = (id) => {
     const updatedCartItems = cartItems.filter(item => item.id !== id);
@@ -72,7 +97,36 @@ function TitleBar({addToCart}) {
           <Button color="white" onClick={() => navigate('/AboutUs')} >About Us</Button>
           <Button color="white" onClick={() => navigate('/FAQs')} >FAQs</Button>
           </Box>
-          <Button color="white" onClick={() => navigate('/login')} >Login</Button>
+          {username ? (
+            <Box sx={{ flexGrow: 0 }}>
+              <Button
+                onClick={handleOpenUserMenu}
+                sx={{ color: 'white' }}
+              >
+                Hello, {username}
+              </Button>
+              <Menu
+                sx={{ mt: '45px' }}
+                id="menu-appbar"
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
+              >
+                <MenuItem onClick={handleLogout}>Logout</MenuItem>
+              </Menu>
+            </Box>
+          ) : (
+            <Button color="white" onClick={handleLogin}>Login</Button>
+          )}
           <Button aria-describedby={id} variant="text" color="white"  onClick={(event) => setAnchorEl(event.currentTarget)}>
             Shopping Cart
           </Button>
