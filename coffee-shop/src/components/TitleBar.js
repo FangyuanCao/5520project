@@ -50,8 +50,6 @@ function TitleBar({addToCart}) {
     setAnchorEl(null);
   };
   const handleLogin = (username) => {
-     //setUsername(username);
-    //localStorage.setItem('username', username);
     navigate('/login'); 
   };
   

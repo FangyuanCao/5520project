@@ -33,8 +33,6 @@ def index():
 def handle_registration():
     uid = request.json.get('user_name')
     password = request.json.get('password')
-
-
     user_type = request.json.get('user_type')
 
     if uid and password:
