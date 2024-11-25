@@ -17,7 +17,7 @@ import Admin from '../components/manage-components/AdminManage';
 import Member from '../components/manage-components/MembershipManage'
 import AdminLogin from '../components/manage-components/AdminLogin'
 import Analytics from '../components/manage-components/Analytics'
-
+import Transfer from '../components/transferAndHistory'
 
 const AppRouter = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -40,11 +40,13 @@ const AppRouter = () => {
         <Route path="/SubMenu/:category" element={<><TitleBar /><Submenu /><Foot /></>} /> {/* 更新了路径 */}
         <Route path="/Discount" element={<><TitleBar /><Discount /><Foot /></>} />
         <Route path="/upload" element={<><TitleBar /><Upload /><Foot /></>} />
+        <Route path="/Transfer" element={<><TitleBar /><Transfer /><Foot /></>} />
         <Route path="/admin/*" element={<Mainlayout />} />
         <Route path="/Analytics" element= {<><Mainlayout />< Analytics/></>} />
         <Route path="/Admin" element={<><Mainlayout />< Admin/></>} />
         <Route path="/Member" element={<><Mainlayout />< Member/></>} />
         <Route path="/AdminLogin" element={<>< AdminLogin/></>} />
+
       </Routes>
     </Router>
   );

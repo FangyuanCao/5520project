@@ -97,6 +97,7 @@ function TitleBar({addToCart}) {
         const data = await response.json();
         if (data) {
           console.log(data);
+          navigate('/Transfer');
           // localStorage.setItem('shoppingCart', []);
           
           // setCartItems([]);
@@ -113,7 +114,6 @@ function TitleBar({addToCart}) {
     } else {
       console.log('Shopping cart is empty!');
     }
-    
   };
 
   return (

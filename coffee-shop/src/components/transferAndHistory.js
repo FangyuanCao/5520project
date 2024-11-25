@@ -57,7 +57,41 @@ const OrderManage = () => {
                     </TableBody>
                 </Table>
             </TableContainer>
-            
+            <Typography variant="h4" gutterBottom>
+                My order history
+            </Typography>
+            <TableContainer component={Paper}>
+                <Table>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>Order Number</TableCell>
+                            <TableCell>Username</TableCell>
+                            <TableCell>Order Details</TableCell>
+                            <TableCell>Amount</TableCell>
+                            <TableCell>Actions</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {orders.map((order) => (
+                            <TableRow key={order.id}>
+                                <TableCell>{order.id}</TableCell>
+                                <TableCell>{order.details}</TableCell>
+                                <TableCell>{order.amount}</TableCell>
+                                <TableCell>
+                                    <Button 
+                                        variant="contained" 
+                                        color="primary" 
+                                        onClick={() => handleShip(order.id)}
+                                        sx={{ mr: 1 }}
+                                    >
+                                        Ship
+                                    </Button>
+                                </TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
         </Box>
     );
 };
