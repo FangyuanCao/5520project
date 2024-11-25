@@ -1,0 +1,72 @@
+[
+    {
+      "name": "Espresso",
+      "type": "beverage",
+      "price": [2, 3, 4],
+      "options": ["S", "M", "L"],
+      "status": true
+    },
+    {
+      "name": "Americano",
+      "type": "beverage",
+      "price": [2, 3, 4],
+      "options": ["S", "M", "L"],
+      "status": true
+    },
+    {
+      "name": "Latte",
+      "type": "beverage",
+      "price": [3, 4, 5],
+      "options": ["S", "M", "L"],
+      "status": true
+    },
+    {
+      "name": "Cappuccino",
+      "type": "beverage",
+      "price": [3, 4, 5],
+      "options": ["S", "M", "L"],
+      "status": true
+    },
+    {
+      "name": "Macchiato",
+      "type": "beverage",
+      "price": [3, 4, 5],
+      "options": ["S", "M", "L"],
+      "status": true
+    },
+    {
+      "name": "Mocha",
+      "type": "beverage",
+      "price": [3, 4, 5],
+      "options": ["S", "M", "L"],
+      "status": true
+    },
+    {
+      "name": "Flat White",
+      "type": "beverage",
+      "price": [3, 4, 5],
+      "options": ["S", "M", "L"],
+      "status": true
+    },
+    {
+      "name": "Cold Brew",
+      "type": "beverage",
+      "price": [3, 4, 5],
+      "options": ["S", "M", "L"],
+      "status": true
+    },
+    {
+      "name": "Frappuccino",
+      "type": "beverage",
+      "price": [4, 5, 6],
+      "options": ["S", "M", "L"],
+      "status": true
+    },
+    {
+      "name": "Affogato",
+      "type": "beverage",
+      "price": [4, 5, 6],
+      "options": ["S", "M", "L"],
+      "status": true
+    }
+  ]
