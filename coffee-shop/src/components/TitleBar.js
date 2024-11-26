@@ -33,9 +33,9 @@ function TitleBar({addToCart}) {
     const cart = JSON.parse(localStorage.getItem('shoppingCart')) || [];
     setCartItems(cart);
   
-   const storedUsername = localStorage.getItem('username');
-   if (storedUsername) {
-     setUsername(storedUsername);
+    const storedUsername = localStorage.getItem('username');
+    if (storedUsername) {
+      setUsername(storedUsername);
   }
   }, []);
     

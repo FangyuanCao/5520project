@@ -252,6 +252,26 @@ def update_cooking_progress(uid):
 
     return jsonify({'status':'complete'})
 
+@app.route("/fetch_transaction_for_user",methods=['POST'])
+@token_required
+def fetch_user_transaction(uid):
+    transactions = DBM.transaction_for_user(uid)
+
+    t_list=[]
+    for t in transactions:
+        t_list.append(
+            {
+                'id':t.id,
+                'uid':t.uid,
+                'products':t.purchase_product,
+                # 'options':t.purchase_options,
+                'transaction_status':t.transaction_status,
+                'cooking_process':str(t.cooking_process),
+            }
+        )
+    print(t_list)
+    return jsonify({'transactions':t_list}) 
+
 if __name__ == "__main__":
     
     app.run(host='0.0.0.0', port=5000)
