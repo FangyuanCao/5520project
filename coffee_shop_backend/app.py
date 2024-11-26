@@ -239,7 +239,7 @@ def all_transactions(uid):
                 'products':ph.purchase_product,
                 # 'options':ph.purchase_options,
                 'transaction_status':ph.transaction_status,
-                'cooking_process':ph.cooking_process,
+                'cooking_process':str(ph.cooking_process),
             }
         )
     return jsonify({'transactions':PH})
