@@ -10,16 +10,19 @@ import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import {useNavigate} from 'react-router-dom';
-import{useEffect} from 'react'
+import{useEffect,useState } from 'react'
 import Popover from '@mui/material/Popover';
 import Divider from '@mui/material/Divider';
 import { ListItem } from '@mui/material';
+import ApiUtil from '../Utils/ApiUtil';
 
 function TitleBar({addToCart}) {
   const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [cartItems, setCartItems] = React.useState([]);
+  const [username, setUsername] = useState(null);
+  const [anchorElUser, setAnchorElUser] = useState(null);
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -29,13 +32,35 @@ function TitleBar({addToCart}) {
   useEffect(() => {
     const cart = JSON.parse(localStorage.getItem('shoppingCart')) || [];
     setCartItems(cart);
+  
+    const storedUsername = localStorage.getItem('username');
+    if (storedUsername) {
+      setUsername(storedUsername);
+  }
   }, []);
+    
+  const handleOpenUserMenu = (event) => {
+    setAnchorElUser(event.currentTarget);
+  };
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
+  };
 
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const removeItem = (id) => {
-    const updatedCartItems = cartItems.filter(item => item.id !== id);
+  const handleLogin = (username) => {
+    navigate('/login'); 
+  };
+  
+  const handleLogout = () => {
+    localStorage.removeItem('username');
+    setUsername(null);
+    navigate('/login');
+  };
+
+  const removeItem = (idx) => {
+    const updatedCartItems = cartItems.filter((item,index) => index !== idx);
     setCartItems(updatedCartItems);
     localStorage.setItem('shoppingCart', JSON.stringify(updatedCartItems));
   };
@@ -44,6 +69,52 @@ function TitleBar({addToCart}) {
   const totalPrice = cartItems.reduce((total, item) => {
     return total + item.price;
   }, 0);
+
+  // add place order function
+  const placeOrder = async ()=>{
+
+
+    const token = localStorage.getItem('token');
+    const cart = JSON.parse(localStorage.getItem('shoppingCart'));
+
+    if (cart && cart.length > 0) {
+      // // Print each item in the shopping cart
+      // cart.forEach((item, index) => {
+      //   console.log(`Item ${index + 1}:`, item);
+      // });
+      try{
+        const response = await fetch(ApiUtil.API_CUSTOMER_PURCHASING, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `${token}`
+          },
+          body: JSON.stringify({
+              'products':cart,
+              'subtotal':totalPrice,
+          }),
+        });
+        const data = await response.json();
+        if (data) {
+          console.log(data);
+          navigate('/Transfer');
+          // localStorage.setItem('shoppingCart', []);
+          
+          // setCartItems([]);
+        } else {
+          
+          console.error('Login failed:', data.status);
+        }
+        console.log(data);
+
+        
+      } catch (error) {
+        console.error(' error', error);
+      }
+    } else {
+      console.log('Shopping cart is empty!');
+    }
+  };
 
   return (
     //title 
@@ -72,7 +143,36 @@ function TitleBar({addToCart}) {
           <Button color="white" onClick={() => navigate('/AboutUs')} >About Us</Button>
           <Button color="white" onClick={() => navigate('/FAQs')} >FAQs</Button>
           </Box>
-          <Button color="white" onClick={() => navigate('/login')} >Login</Button>
+          {username ? (
+            <Box sx={{ flexGrow: 0 }}>
+              <Button
+                onClick={handleOpenUserMenu}
+                sx={{ color: 'white' }}
+              >
+                Hello, {username}
+              </Button>
+              <Menu
+                sx={{ mt: '45px' }}
+                id="menu-appbar"
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
+              >
+                <MenuItem onClick={handleLogout}>Logout</MenuItem>
+              </Menu>
+            </Box>
+          ) : (
+            <Button color="white" onClick={handleLogin}>Login</Button>
+          )}
           <Button aria-describedby={id} variant="text" color="white"  onClick={(event) => setAnchorEl(event.currentTarget)}>
             Shopping Cart
           </Button>
@@ -95,13 +195,14 @@ function TitleBar({addToCart}) {
                             ml:"2.5%",
                             mt:"2%" }} >
                              {cartItems.length > 0 ? (
-                            cartItems.map((item) => (
-                            <Box key={item.id} display="flex" justifyContent="space-between" alignItems="center"  style={{border:'1px solid #ccc',padding:'10px',margin:'10px 0',backgroundColor : '#a1887f'}}>
+                            cartItems.map((item,index) => (
+                            <Box key={index+item.id+item.name+item.selectedSize} display="flex" justifyContent="space-between" alignItems="center"  style={{border:'1px solid #ccc',padding:'10px',margin:'10px 0',backgroundColor : '#a1887f'}}>
                             <Typography>{item.name}</Typography>
                             <Typography>size:{item.selectedSize}</Typography>
                             <Typography>${item.price}</Typography>
+                            <Typography>quantity:{item.quantity}</Typography>
                             <Button variant="text" color="black">Edit</Button>
-                            <Button variant="text" color="black"  onClick={() => removeItem(item.id)}>Remove</Button>
+                            <Button variant="text" color="black"  onClick={() => removeItem(index)}>Remove</Button>
                             <Divider />
                             </Box>
                             
@@ -115,7 +216,7 @@ function TitleBar({addToCart}) {
                         
             </Box>
             <Typography sx={{ p: 2, fontSize:"25px" }}>Total: ${totalPrice}</Typography>
-            <Button variant="contained" sx={{width:400, height: 50,  color: '#5d4037', fontSize: "30px"}}>Checkout</Button>
+            <Button variant="contained" sx={{width:400, height: 50,  color: '#5d4037', fontSize: "30px"}} onClick={() => placeOrder()}>Checkout</Button>
           </Popover>
         </Toolbar>
       </Container>

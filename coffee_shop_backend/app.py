@@ -33,8 +33,6 @@ def index():
 def handle_registration():
     uid = request.json.get('user_name')
     password = request.json.get('password')
-
-
     user_type = request.json.get('user_type')
 
     if uid and password:
@@ -102,7 +100,7 @@ def handle_user_login():
                 DBM.delete_login_session_uid(uid=uid)
                 DBM.add_login_session(token=server_auth,uid=uid)
 
-                return jsonify({'status':'complete','authentication':server_auth})
+                return jsonify({'status':'complete','authentication':server_auth,'user_type':user.user_type})
         
     ##########################
 
@@ -133,6 +131,14 @@ def token_required(f):
         return f(uid, *args, **kwargs)
     return decorated
 
+@app.route("/all_customers", methods=["POST"])
+def get_all_customers_email():
+    users = DBM.find_users_by_type()
+    u_emails=[]
+    for u in users:
+        u_emails.append(u.uid)
+
+    return jsonify({"user_emails":u_emails})
 
 @app.route("/fetch_products", methods=["POST"])
 def get_products():
@@ -153,6 +159,7 @@ def get_products():
     for p in products:
         product_list.append(
             {
+                'id':p.product_id,
                 'name':p.product_name,
                 'type':p.product_type,
                 'price':p.product_prices,
@@ -169,7 +176,8 @@ def get_products():
     return jsonify({
         "product_list": product_list[:number]
     })
-
+# @app.route("/fetch_product_by_name", methods=["POST"])
+# def get_product_by_name():
 @app.route("/update_products", methods=["POST"])
 def update_products():
 
@@ -202,7 +210,7 @@ def delete_product():
 def purchase(uid):
 
     products = request.json.get('products')  
-    options = request.json.get('options')    
+    # options = request.json.get('options')    
     subtotal = request.json.get('subtotal') 
     
 
@@ -210,8 +218,9 @@ def purchase(uid):
         return jsonify({'status':'no subtotal'}), 400
     
     print(f"customer {uid} requests to purchase for subtotal of {subtotal}")
+    print(f"{products}")
     #execute
-    DBM.add_transaction_for_user(uid=uid,product_names=products,purchase_options=options,subtotal=subtotal,transaction_status=False)
+    DBM.add_transaction_for_user(uid=uid,product_names=products,subtotal=subtotal,transaction_status=False)
 
     return jsonify({'url':'test_url'})
 
@@ -228,12 +237,40 @@ def all_transactions(uid):
                 'id':ph.id,
                 'uid':ph.uid,
                 'products':ph.purchase_product,
-                'options':ph.purchase_options,
+                # 'options':ph.purchase_options,
                 'transaction_status':ph.transaction_status,
-                'cooking_process':ph.cooking_process,
+                'cooking_process':str(ph.cooking_process),
             }
         )
     return jsonify({'transactions':PH})
+
+@app.route("/update_transaction_cooking_process")
+def update_cooking_progress(uid):
+    id = request.json.get('order_id')  
+    cooking_progress = request.json.get('cooking_progress')  
+    DBM.update_cooking_process(id , cooking_progress)
+
+    return jsonify({'status':'complete'})
+
+@app.route("/fetch_transaction_for_user",methods=['POST'])
+@token_required
+def fetch_user_transaction(uid):
+    transactions = DBM.transaction_for_user(uid)
+
+    t_list=[]
+    for t in transactions:
+        t_list.append(
+            {
+                'id':t.id,
+                'uid':t.uid,
+                'products':t.purchase_product,
+                # 'options':t.purchase_options,
+                'transaction_status':t.transaction_status,
+                'cooking_process':str(t.cooking_process),
+            }
+        )
+    print(t_list)
+    return jsonify({'transactions':t_list}) 
 
 if __name__ == "__main__":
     

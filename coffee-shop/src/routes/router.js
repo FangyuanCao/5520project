@@ -14,9 +14,10 @@ import Discount from '../components/Discount';
 import Mainlayout from '../components/manage-components/Mainlayout';
 import Upload from '../components/upload';
 import Admin from '../components/manage-components/AdminManage';
-const PrivateRoute = ({ element, isAuthenticated }) => {
-  return isAuthenticated ? element : <Navigate to="/login" replace />;
-};
+import Member from '../components/manage-components/MembershipManage'
+import AdminLogin from '../components/manage-components/AdminLogin'
+import Analytics from '../components/manage-components/Analytics'
+import Transfer from '../components/transferAndHistory'
 
 const AppRouter = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -39,13 +40,13 @@ const AppRouter = () => {
         <Route path="/SubMenu/:category" element={<><TitleBar /><Submenu /><Foot /></>} /> {/* 更新了路径 */}
         <Route path="/Discount" element={<><TitleBar /><Discount /><Foot /></>} />
         <Route path="/upload" element={<><TitleBar /><Upload /><Foot /></>} />
-        <Route path="/admin" element={<><TitleBar />< Admin/><Foot /></>} />
+        <Route path="/Transfer" element={<><TitleBar /><Transfer /><Foot /></>} />
+        <Route path="/admin/*" element={<Mainlayout />} />
+        <Route path="/Analytics" element= {<><Mainlayout />< Analytics/></>} />
+        <Route path="/Admin" element={<><Mainlayout />< Admin/></>} />
+        <Route path="/Member" element={<><Mainlayout />< Member/></>} />
+        <Route path="/AdminLogin" element={<>< AdminLogin/></>} />
 
-        {/* 仅在 /admin/* 路径下加载 Mainlayout */}
-        <Route 
-          path="/admin/*" 
-          element={<PrivateRoute isAuthenticated={isAuthenticated} element={<Mainlayout />} />} 
-        />
       </Routes>
     </Router>
   );

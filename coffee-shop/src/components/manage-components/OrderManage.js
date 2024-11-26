@@ -30,6 +30,7 @@ const OrderManage = () => {
                     <TableHead>
                         <TableRow>
                             <TableCell>Order Number</TableCell>
+                            <TableCell>Username</TableCell>
                             <TableCell>Order Details</TableCell>
                             <TableCell>Amount</TableCell>
                             <TableCell>Actions</TableCell>
@@ -50,19 +51,13 @@ const OrderManage = () => {
                                     >
                                         Ship
                                     </Button>
-                                    <Button 
-                                        variant="contained" 
-                                        color="secondary" 
-                                        onClick={() => handleDelete(order.id)}
-                                    >
-                                        Delete
-                                    </Button>
                                 </TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
                 </Table>
             </TableContainer>
+            
         </Box>
     );
 };

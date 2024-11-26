@@ -4,17 +4,14 @@ import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid2';
 import Container from '@mui/material/Container';
-import { autocompleteClasses } from '@mui/material';
-import ButtonGroup from '@mui/material/ButtonGroup';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import {useNavigate} from 'react-router-dom';
 import TextField from '@mui/material/TextField';
 import { useState } from 'react';
-import ApiUtil from '../../Utils/ApiUtil';
+import ApiUtil from '../../Utils/ApiUtil'
+import Alert from '@mui/material/Alert';
 
-
- 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: '#fff',
   ...theme.typography.body2,
@@ -25,50 +22,58 @@ const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: '#1A2027',
   }),
 }));
-export default function LoginGrid() {
+export default function  Login() {
   const navigate = useNavigate();
   const token = 'test_toke_1234'; 
-  console.log('Token:', token);
-  const [accountName, setAccountName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [userType, setUserType] = useState('Admin');
-  const handleSignUp = async (event)=>{
+  const [username, inputUsername] = useState('');
+  const [password, inputPassword] = useState('');
+  const [displayAlert, setDisplayAlert] = useState(false);
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    try {
-      const response = await fetch(ApiUtil.API_REGISTRATION, {
+    try{
+      const response = await fetch(ApiUtil.API_LOGIN, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({
-          user_name: accountName,
+          user_name: username,
           password: password,
-          user_type: userType
+          user_type: 'customer',
         }),
       });
       const data = await response.json();
       if (data.authentication) {
         localStorage.setItem('token', data.authentication);
+        localStorage.setItem('username', username);
         console.log('Token stored:', data.authentication);
+        
+            navigate('/Admin/orders');
+            window.location.reload();
       } else {
+        setDisplayAlert(true);
         console.error('Login failed:', data.status);
       }
       console.log(data);
     } catch (error) {
-      console.error(' error !', error);
+      console.error(' error', error);
     }
-  };
+    }
+
   return (
     <Container maxWidth={false} style={{maxWidth: '600px',alignItems: 'center', justifyContent:"center" }}>
-    <Box sx={{display: 'flex', alignItems: 'center',  justifyContent: 'center', height: '80vh'}}>
-      <Grid container spacing={2} component="form" onSubmit = {handleSignUp}>
+    {displayAlert&& (<Alert severity="warning" onClose={() => setDisplayAlert(false)}>Invaild username or name </Alert>)}
+    <Box 
+      component="form"
+      onSubmit={handleSubmit}
+      sx={{display: 'flex', alignItems: 'center',  justifyContent: 'center', height: '80vh'}}>
+      <Grid container spacing={2}>
       <Grid size={12} >
         <Typography 
         gutterBottom variant="h3" 
         component="div" 
+        onClick={() => navigate('/')}
         sx={{
           display: { xs: 'none', md: 'flex' },
           fontFamily: 'monospace',
@@ -78,13 +83,14 @@ export default function LoginGrid() {
           justifyContent: "center"
         }}
         >
-          Coffee shop Admin
+          Coffee shop
         </Typography>
         </Grid>
         <Grid size={12}>
-        <Typography
+            <Typography
             gutterBottom variant="h5" 
             component="div" 
+            onClick={() => navigate('/login')}
             sx={{
               display: { xs: 'none', md: 'flex' },
               fontFamily: 'monospace',
@@ -94,10 +100,11 @@ export default function LoginGrid() {
               justifyContent: "center"
             }}
             >
-              SIGN UP
+              Admin Login
             </Typography>
         </Grid>
-        <Grid size={12}>
+        
+        <Grid size={12} onSubmit={handleSubmit}>
           <Box
               component="form"
               sx={{ '& > :not(style)': { m: 1, width: '70ch' } }}
@@ -107,10 +114,9 @@ export default function LoginGrid() {
               <TextField
                id="outlined-required"
                label="Account Name" 
+               value={username} 
+               onChange = {(event) => inputUsername(event.target.value)}
                variant="outlined" 
-               name="accountName"
-               value={accountName}
-               onChange={(e) => setAccountName(e.target.value)}
                />
           </Box>
         </Grid>
@@ -123,52 +129,17 @@ export default function LoginGrid() {
             >
               <TextField
                id="outlined-required"
-               label="Email Adress" 
-               variant="outlined" 
-               name ="email"
-               value = {email}
-               onChange={(e) => setEmail(e.target.value)}
-               />
-          </Box>
-        </Grid>
-        <Grid size={12}>
-        <Box
-              component="form"
-              sx={{ '& > :not(style)': { m: 1, width: '70ch' } }}
-              noValidate
-              autoComplete="off"
-            >
-              <TextField
-               id="outlined-required"
-               label="Password" 
-               variant="outlined" 
-               type="password"
+               label="PassWord" 
                value={password}
-               onChange={(e) => setPassword(e.target.value)}
-               />
-          </Box>
-        </Grid>
-        <Grid size={12}>
-        <Box
-              component="form"
-              sx={{ '& > :not(style)': { m: 1, width: '70ch' } }}
-              noValidate
-              autoComplete="off"
-            >
-              <TextField
-               id="outlined-required"
-               label="Confirm New Password" 
+                onChange={(event) => inputPassword(event.target.value)}
                variant="outlined" 
-               type="password"
-               value={confirmPassword}
-               onChange={(e) => setConfirmPassword(e.target.value)}
                />
           </Box>
         </Grid>
-        <Grid size={12}   container justifyContent ='center'>
+        <Grid size={12} container justifyContent ='center'>
           <Box
           >
-            <Button type="submit" variant="contained" sx={{width:400, height: 50,  color: '#5d4037', fontSize: "30px"}}>Create Account</Button>
+            <Button type="submit" variant="contained" sx={{width:400, height: 50,  color: '#5d4037', fontSize: "30px"}}>SIGN IN</Button>
           </Box>
         </Grid>
       </Grid>
@@ -176,3 +147,4 @@ export default function LoginGrid() {
     </Container>
   );
 }
+

@@ -22,7 +22,7 @@ import { render, screen, fireEvent, waitFor} from '@testing-library/react';
   fireEvent.click(screen.getByText('Shopping Cart'));
   expect(screen.getByText('Total:')).toBeInTheDocument();
 
-});*/
+});
 
 test('renders all navigation buttons in login', () => {
   render(
