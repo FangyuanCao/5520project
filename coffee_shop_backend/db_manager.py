@@ -283,8 +283,9 @@ class DBManager():
         session.close()
 
     def update_cooking_process(self, history_id, cooking_process):
+        print(history_id,cooking_process)
         session = self.Session()
-        session.query(PurchaseHistory).filter(PurchaseHistory.id==history_id).update({"cooking_process":cooking_process})
+        session.query(PurchaseHistory).filter(PurchaseHistory.id==history_id).update({"cooking_process":CookingProcess(cooking_process)})
         session.commit()
         session.close()
 

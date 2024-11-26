@@ -240,14 +240,19 @@ def all_transactions(uid):
                 # 'options':ph.purchase_options,
                 'transaction_status':ph.transaction_status,
                 'cooking_process':str(ph.cooking_process),
+                'price':ph.price,
             }
         )
+    # print(PH)
     return jsonify({'transactions':PH})
 
-@app.route("/update_transaction_cooking_process")
+@app.route("/update_transaction_cooking_process",methods=['POST'])
+@token_required
 def update_cooking_progress(uid):
     id = request.json.get('order_id')  
     cooking_progress = request.json.get('cooking_progress')  
+
+    print(id, cooking_progress)
     DBM.update_cooking_process(id , cooking_progress)
 
     return jsonify({'status':'complete'})
@@ -267,6 +272,7 @@ def fetch_user_transaction(uid):
                 # 'options':t.purchase_options,
                 'transaction_status':t.transaction_status,
                 'cooking_process':str(t.cooking_process),
+                'price':t.price,
             }
         )
     print(t_list)

@@ -1,18 +1,64 @@
 // src/components/manage-components/OrderManage.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button } from '@mui/material';
 
 const OrderManage = () => {
     // 示例订单数据，可以替换为从 API 获取的数据
     const [orders, setOrders] = useState([
-        { id: '1001', details: 'Product A - Size M', amount: '$50.00' },
-        { id: '1002', details: 'Product B - Size L', amount: '$75.00' },
-        { id: '1003', details: 'Product C - Size S', amount: '$25.00' },
+        // { id: '1001', details: 'Product A - Size M', amount: '$50.00' },
+        // { id: '1002', details: 'Product B - Size L', amount: '$75.00' },
+        // { id: '1003', details: 'Product C - Size S', amount: '$25.00' },
     ]);
+    const [income, setIncome] = useState(null);
+
+    // 
+    useEffect ( () => {
+        const token = localStorage.getItem('token');
+        
+        fetch('http://localhost:5000/all_transactions', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `${token}`
+            },
+            // body: JSON.stringify({
+                
+            // }),
+            })
+            .then((response) => response.json())
+            .then((data) => {
+                setOrders(data.transactions || []);
+                console.log(data);
+                const totalPrice = data.transactions.reduce((sum, item) => sum + item.price, 0);
+                setIncome(totalPrice);
+            })
+            .catch((error) => console.error('Error fetching products:', error));
+        
+
+
+    },[]);
 
     // 处理发货按钮点击事件
     const handleShip = (orderId) => {
         alert(`Order ${orderId} has been shipped!`);
+        const token = localStorage.getItem('token');
+        
+
+        fetch('http://localhost:5000/update_transaction_cooking_process', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `${token}`
+            },
+            body: JSON.stringify({
+                'order_id':orderId,
+                'cooking_progress':'order_complete'
+            }),
+            })
+            .then((response) => response.json())
+            .then((data) => console.log(data))
+            .catch((error) => console.error('Error fetching products:', error));
+            window.location.reload();
     };
 
     // 处理删除订单按钮点击事件
@@ -25,6 +71,7 @@ const OrderManage = () => {
             <Typography variant="h4" gutterBottom>
                 Order Management
             </Typography>
+            <Box>{income}</Box>
             <TableContainer component={Paper}>
                 <Table>
                     <TableHead>
@@ -32,7 +79,7 @@ const OrderManage = () => {
                             <TableCell>Order Number</TableCell>
                             <TableCell>Username</TableCell>
                             <TableCell>Order Details</TableCell>
-                            <TableCell>Amount</TableCell>
+                            {/* <TableCell>Amount</TableCell> */}
                             <TableCell>Actions</TableCell>
                         </TableRow>
                     </TableHead>
@@ -40,8 +87,16 @@ const OrderManage = () => {
                         {orders.map((order) => (
                             <TableRow key={order.id}>
                                 <TableCell>{order.id}</TableCell>
-                                <TableCell>{order.details}</TableCell>
-                                <TableCell>{order.amount}</TableCell>
+                                <TableCell>{order.uid}</TableCell>
+                                <TableCell>{order.products.map((item)=>(
+                                    <>
+                                    <TableCell>{item.name}</TableCell>
+                                    <TableCell>{item.price}</TableCell>
+                                    <TableCell>{item.selectedSize}</TableCell>
+                                    <TableCell>{item.quantity}</TableCell>
+                                    </>
+                                ))}</TableCell>
+                                <TableCell>{order.cooking_process}</TableCell>
                                 <TableCell>
                                     <Button 
                                         variant="contained" 
