@@ -13,7 +13,7 @@ const UploadButton = styled(Button)({
 
 const FileUpload = () => {
   const [file, setFile] = useState(null);
-  const [jsonData, setJsonData] = useState(null);
+  const [jsonDataList, setJsonDataList] = useState([]);
   const token = 'test_toke_1234'; 
 
   const handleFileChange = (event) => {
@@ -24,7 +24,7 @@ const FileUpload = () => {
     reader.onload = (e) => {
       try {
         const json = JSON.parse(e.target.result);
-        setJsonData(json);
+        setJsonDataList(json);
       } catch (error) {
         console.error('Error parsing JSON:', error);
       }
@@ -33,7 +33,7 @@ const FileUpload = () => {
   };
 
   const handleUpload = async () => {
-    if (jsonData) {
+    for (const jsonData of jsonDataList) {
       const { name, type, price, options, status } = jsonData;
       try {
         const response = await fetch(ApiUtil.API_UPDATE_PRODUCTS, {
@@ -80,10 +80,11 @@ const FileUpload = () => {
           Selected file: {file.name}
         </Typography>
       )}
-      {jsonData && (
+      {jsonDataList.length > 0  && (
         <Box style={{ marginTop: '10px' }}>
           <Typography variant="h6">JSON Data:</Typography>
-          <pre>{JSON.stringify(jsonData, null, 2)}</pre>
+          {jsonDataList.map((jsonData, index) => (
+            <pre key={index}>{JSON.stringify(jsonData, null, 2)}</pre>))}
           <UploadButton variant="contained" onClick={handleUpload}>
             Upload
           </UploadButton>
