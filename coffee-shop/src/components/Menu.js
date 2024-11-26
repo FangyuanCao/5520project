@@ -20,7 +20,7 @@ const Menu = () => {
   return (
 
   
-    <Grid container spacing={2}>
+    <Grid container spacing={2} sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', height:'86vh' }} >
       <Grid item xs={12} container direction="column" alignItems="center" spacing={1}>
         <Box sx={{
           width: "100%",
@@ -46,7 +46,7 @@ const Menu = () => {
               overflow: "hidden",
               cursor: "pointer",
               borderRadius: 3,
-              height: 200,
+              height: 400,
               display: "flex",
               alignItems: "center",
               justifyContent: "center",

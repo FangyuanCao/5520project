@@ -77,7 +77,7 @@ const SubMenu = () => {
   };
   const handleQuantityChange = (event) => {
     //const qty = event.target.value;
-    const qty = Math.max(0, event.target.value);
+    const qty = Math.max(1, event.target.value);
     setQuantity(qty);
 
     const sizeIndex = selectedProduct.options.indexOf(selectedSize);
@@ -109,7 +109,7 @@ const SubMenu = () => {
   };
 
   return (
-    <Container sx={{ maxWidth: '100%', margin: 'auto auto', mt: 4 }}>
+    <Container sx={{ maxWidth: '100%', Height:'100%', margin: 'auto auto', mt: 4 }}>
       <Button variant="outlined" onClick={() => navigate('/Menu')} sx={{ mb: 2 }}>
         Back to Categories
       </Button>
