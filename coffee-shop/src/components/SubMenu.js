@@ -41,9 +41,10 @@ const SubMenu = () => {
   }, [category]);
   useEffect(() => {
     if (selectedProduct) {
-      setSelectedSize(selectedProduct.selectedSize || '');
+      const defaultSize = selectedProduct.selectedSize || 'S'; 
+      setSelectedSize(defaultSize);
       setQuantity(selectedProduct.quantity || 1);
-      const sizeIndex = selectedProduct.options.indexOf(selectedProduct.selectedSize);
+      const sizeIndex = selectedProduct.options.indexOf(defaultSize);
       if (sizeIndex !== -1) {
         setPrice(selectedProduct.price[sizeIndex] * (selectedProduct.quantity || 1));
       }
@@ -75,7 +76,8 @@ const SubMenu = () => {
     }
   };
   const handleQuantityChange = (event) => {
-    const qty = event.target.value;
+    //const qty = event.target.value;
+    const qty = Math.max(0, event.target.value);
     setQuantity(qty);
 
     const sizeIndex = selectedProduct.options.indexOf(selectedSize);
