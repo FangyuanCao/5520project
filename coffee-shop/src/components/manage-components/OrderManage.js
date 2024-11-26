@@ -9,6 +9,7 @@ const OrderManage = () => {
         // { id: '1002', details: 'Product B - Size L', amount: '$75.00' },
         // { id: '1003', details: 'Product C - Size S', amount: '$25.00' },
     ]);
+    const [income, setIncome] = useState(null);
 
     // 
     useEffect ( () => {
@@ -25,8 +26,15 @@ const OrderManage = () => {
             // }),
             })
             .then((response) => response.json())
-            .then((data) => setOrders(data.transactions || []))
+            .then((data) => {
+                setOrders(data.transactions || []);
+                console.log(data);
+                const totalPrice = data.transactions.reduce((sum, item) => sum + item.price, 0);
+                setIncome(totalPrice);
+            })
             .catch((error) => console.error('Error fetching products:', error));
+        
+
 
     },[]);
 
@@ -35,7 +43,7 @@ const OrderManage = () => {
         alert(`Order ${orderId} has been shipped!`);
         const token = localStorage.getItem('token');
         
-        
+
         fetch('http://localhost:5000/update_transaction_cooking_process', {
             method: 'POST',
             headers: {
@@ -50,7 +58,7 @@ const OrderManage = () => {
             .then((response) => response.json())
             .then((data) => console.log(data))
             .catch((error) => console.error('Error fetching products:', error));
-
+            window.location.reload();
     };
 
     // 处理删除订单按钮点击事件
@@ -63,6 +71,7 @@ const OrderManage = () => {
             <Typography variant="h4" gutterBottom>
                 Order Management
             </Typography>
+            <Box>{income}</Box>
             <TableContainer component={Paper}>
                 <Table>
                     <TableHead>
