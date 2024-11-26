@@ -242,12 +242,16 @@ def all_transactions(uid):
                 'cooking_process':str(ph.cooking_process),
             }
         )
+    # print(PH)
     return jsonify({'transactions':PH})
 
-@app.route("/update_transaction_cooking_process")
+@app.route("/update_transaction_cooking_process",methods=['POST'])
+@token_required
 def update_cooking_progress(uid):
     id = request.json.get('order_id')  
     cooking_progress = request.json.get('cooking_progress')  
+
+    print(id, cooking_progress)
     DBM.update_cooking_process(id , cooking_progress)
 
     return jsonify({'status':'complete'})
