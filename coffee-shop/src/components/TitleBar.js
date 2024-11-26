@@ -77,6 +77,11 @@ function TitleBar({addToCart}) {
     const token = localStorage.getItem('token');
     const cart = JSON.parse(localStorage.getItem('shoppingCart'));
 
+    if (!token){
+      alert("Please login!");
+      return ;
+    }
+
     if (cart && cart.length > 0) {
       // // Print each item in the shopping cart
       // cart.forEach((item, index) => {
