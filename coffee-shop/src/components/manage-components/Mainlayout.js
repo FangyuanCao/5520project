@@ -13,6 +13,13 @@ const drawerWidth = 240;
 
 const Mainlayout = () => {
     const navigate = useNavigate();
+
+    const handleSignOut = () => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('username');
+        console.log('Token after removal:', localStorage.getItem('token'));
+        navigate('/');
+      };
     return (
         <div style={{ display: 'flex' }}>
             {/* 顶部导航栏 */}
@@ -24,10 +31,10 @@ const Mainlayout = () => {
                     <Box sx={{ flexGrow: 1 }} /> {/* 占据剩余空间 */}
                     <Button 
                      variant="h6"
-                     onClick={() => navigate('/')} 
+                     onClick={handleSignOut}  
                      sx={{ mb: 2 }}
                     >
-        Back to Main page
+        Sign out
       </Button>
                 </Toolbar>
                 
