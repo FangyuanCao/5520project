@@ -159,6 +159,7 @@ export default function  Login() {
             >
               <TextField
                id="outlined-required"
+               type = 'password'
                label="PassWord" 
                value={password}
                 onChange={(event) => inputPassword(event.target.value)}

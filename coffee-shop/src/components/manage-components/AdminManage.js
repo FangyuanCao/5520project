@@ -142,7 +142,7 @@ export default function LoginGrid() {
                id="outlined-required"
                label="Password" 
                variant="outlined" 
-               type="password"
+                type = 'password'
                value={password}
                onChange={(e) => setPassword(e.target.value)}
                />

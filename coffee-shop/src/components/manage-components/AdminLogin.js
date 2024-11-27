@@ -131,6 +131,7 @@ export default function  Login() {
                id="outlined-required"
                label="PassWord" 
                value={password}
+                type = 'password'
                 onChange={(event) => inputPassword(event.target.value)}
                variant="outlined" 
                />

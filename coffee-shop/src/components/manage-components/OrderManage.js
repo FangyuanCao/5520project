@@ -120,14 +120,6 @@ const OrderManage = () => {
             <Typography variant="h6">
                 Total Profit/Loss: ${income}
             </Typography>
-            <Button 
-                variant="contained" 
-                color={isOpen ? "secondary" : "primary"} 
-                onClick={toggleStore} 
-                sx={{ mt: 2 }}
-            >
-                {isOpen ? 'Close Store' : 'Open Store'}
-            </Button>
         </Box>
     );
 };

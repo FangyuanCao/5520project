@@ -79,7 +79,7 @@ const OrderManage = () => {
             <Typography variant="h4" gutterBottom>
                 My order history
             </Typography>
-            <TableContainer component={Paper}>
+            <TableContainer component={Paper} sx={{height:'72vh'}}>
                 <Table>
                     <TableHead>
                         <TableRow>
