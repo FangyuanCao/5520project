@@ -52,6 +52,9 @@ function TitleBar({addToCart}) {
   const handleLogin = (username) => {
     navigate('/login'); 
   };
+  const handleHistory = (username) => {
+    navigate('/Transfer'); 
+  };
   
   const handleLogout = () => {
     localStorage.removeItem('username');
@@ -102,7 +105,8 @@ function TitleBar({addToCart}) {
         const data = await response.json();
         if (data) {
           console.log(data);
-          navigate('/Transfer');
+          //navigate('/Transfer');
+          window.location.href = 'https://www.google.com';
           localStorage.removeItem('shoppingCart');
           
           // setCartItems([]);
@@ -119,7 +123,6 @@ function TitleBar({addToCart}) {
     } else {
       console.log('Shopping cart is empty!');
     }
-    window.location.reload();
   };
 
   return (
@@ -174,6 +177,7 @@ function TitleBar({addToCart}) {
                 onClose={handleCloseUserMenu}
               >
                 <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                <MenuItem onClick={handleHistory}>History</MenuItem>
               </Menu>
             </Box>
           ) : (
@@ -207,7 +211,6 @@ function TitleBar({addToCart}) {
                             <Typography>size:{item.selectedSize}</Typography>
                             <Typography>${item.price}</Typography>
                             <Typography>quantity:{item.quantity}</Typography>
-                            <Button variant="text" color="black">Edit</Button>
                             <Button variant="text" color="black"  onClick={() => removeItem(index)}>Remove</Button>
                             <Divider />
                             </Box>
