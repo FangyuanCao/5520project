@@ -118,7 +118,7 @@ const OrderManage = () => {
             </TableContainer>
             <Divider sx={{ my: 3 }} />
             <Typography variant="h6">
-                Total Profit/Loss: ${income}
+                Total Profit/Loss: ${income.toFixed(2)}
             </Typography>
         </Box>
     );
