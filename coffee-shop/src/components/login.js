@@ -77,7 +77,7 @@ export default function  Login() {
 
   return (
     <Container maxWidth={false} style={{maxWidth: '600px',alignItems: 'center', justifyContent:"center" }}>
-    {displayAlert&& (<Alert severity="warning" onClose={() => setDisplayAlert(false)}>Invaild username or name </Alert>)}
+    {displayAlert&& (<Alert severity="warning" onClose={() => setDisplayAlert(false)}>Invaild name or PassWord </Alert>)}
     <Box 
       component="form"
       onSubmit={handleSubmit}

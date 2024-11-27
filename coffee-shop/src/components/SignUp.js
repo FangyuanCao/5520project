@@ -50,9 +50,10 @@ export default function LoginGrid() {
         }),
       });
       const data = await response.json();
-      if (data.authentication) {
+      if (data.status) {
         localStorage.setItem('token', data.authentication);
         console.log('Token stored:', data.authentication);
+        navigate('/login');
       } else {
         console.error('Login failed:', data.status);
       }
@@ -187,7 +188,7 @@ export default function LoginGrid() {
         <Grid size={12}   container justifyContent ='center'>
           <Box
           >
-            <Button type="submit"  onClick={() => navigate('/Login')} variant="contained" sx={{width:400, height: 50,  color: '#5d4037', fontSize: "30px"}}>Create Account</Button>
+            <Button type="submit" onSubmit={handleSignUp} variant="contained" sx={{width:400, height: 50,  color: '#5d4037', fontSize: "30px"}}>Create Account</Button>
           </Box>
         </Grid>
       </Grid>
