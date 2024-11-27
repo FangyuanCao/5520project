@@ -170,7 +170,7 @@ export default function LoginGrid() {
           >
             <Button type="submit" variant="contained" sx={{width:400, height: 50,  color: '#5d4037', fontSize: "30px"}}>Create Account</Button>
           </Box>
-        </Grid>
+        </Grid> 
       </Grid>
     </Box>
     </Container>

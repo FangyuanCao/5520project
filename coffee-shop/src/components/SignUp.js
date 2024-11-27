@@ -187,7 +187,7 @@ export default function LoginGrid() {
         <Grid size={12}   container justifyContent ='center'>
           <Box
           >
-            <Button type="submit" variant="contained" sx={{width:400, height: 50,  color: '#5d4037', fontSize: "30px"}}>Create Account</Button>
+            <Button type="submit"  onClick={() => navigate('/Login')} variant="contained" sx={{width:400, height: 50,  color: '#5d4037', fontSize: "30px"}}>Create Account</Button>
           </Box>
         </Grid>
       </Grid>
