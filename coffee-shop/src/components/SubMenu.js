@@ -24,6 +24,7 @@ const SubMenu = () => {
   const { category } = useParams();
   const navigate = useNavigate();
 
+  // console.log(category);
   useEffect(() => {
     fetch('http://localhost:5000/fetch_products', {
       method: 'POST',

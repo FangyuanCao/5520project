@@ -1,0 +1,72 @@
+[
+    {
+        "name": "Croissant",
+        "type": "food",
+        "price": [3],
+        "options": ["Plain"],
+        "status": true
+    },
+    {
+        "name": "Bagel",
+        "type": "food",
+        "price": [2],
+        "options": ["Plain"],
+        "status": true
+    },
+    {
+        "name": "Muffin",
+        "type": "food",
+        "price": [2],
+        "options": ["Blueberry"],
+        "status": true
+    },
+    {
+        "name": "Sandwich",
+        "type": "food",
+        "price": [5],
+        "options": ["Ham & Cheese"],
+        "status": true
+    },
+    {
+        "name": "Salad",
+        "type": "food",
+        "price": [4],
+        "options": ["Caesar"],
+        "status": true
+    },
+    {
+        "name": "Quiche",
+        "type": "food",
+        "price": [4],
+        "options": ["Lorraine"],
+        "status": true
+    },
+    {
+        "name": "Panini",
+        "type": "food",
+        "price": [5],
+        "options": ["Chicken"],
+        "status": true
+    },
+    {
+        "name": "Wrap",
+        "type": "food",
+        "price": [4],
+        "options": ["Chicken Caesar"],
+        "status": true
+    },
+    {
+        "name": "Scone",
+        "type": "food",
+        "price": [2],
+        "options": ["Plain"],
+        "status": true
+    },
+    {
+        "name": "Brownie",
+        "type": "food",
+        "price": [3],
+        "options": ["Classic"],
+        "status": true
+    }
+]
