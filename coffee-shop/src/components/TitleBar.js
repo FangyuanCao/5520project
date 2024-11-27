@@ -106,7 +106,7 @@ function TitleBar({addToCart}) {
         if (data) {
           console.log(data);
           //navigate('/Transfer');
-          window.location.href = 'https://www.google.com';
+          window.location.href = data.url; //'https://www.google.com';
           localStorage.removeItem('shoppingCart');
           
           // setCartItems([]);

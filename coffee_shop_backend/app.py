@@ -4,6 +4,7 @@ import bcrypt
 from flask import Flask, jsonify, render_template
 from flask import request
 from flask_cors import CORS, cross_origin
+import stripe
 from db_manager import *
 app = Flask(__name__)
 app.secret_key = "123"
@@ -212,6 +213,8 @@ def purchase(uid):
     products = request.json.get('products')  
     # options = request.json.get('options')    
     subtotal = request.json.get('subtotal') 
+
+    q = subtotal*100
     
 
     if not subtotal:
@@ -222,7 +225,21 @@ def purchase(uid):
     #execute
     DBM.add_transaction_for_user(uid=uid,product_names=products,subtotal=subtotal,transaction_status=False)
 
-    return jsonify({'url':'test_url'})
+    try:
+        checkout_session = stripe.checkout.Session.create(
+            api_key='sk_test_51QPpwWDusVrbylQcvRVdYCxPecSQovNUui5sVf3LfrJltNiCPh7BgvpldBiAbKQv8KkVnscm3WV3mb3ulXynb3MN000xaFtJ7P',
+            success_url=f"http://localhost:3000/Transfer",
+            cancel_url=f"http://localhost:3000/Transfer",
+            mode = "payment",
+            line_items=[{"price":'price_1QPpxZDusVrbylQcAvyq6PFl',"adjustable_quantity": {"enabled": False, },"quantity":q}], #"minimum": 1, "maximum": 10
+            # customer_email=uid,
+            metadata={"uid":uid},
+            # customer_email=uid,
+        )
+    except:
+        jsonify({'url':'http://localhost:3000/Transfer'})
+
+    return jsonify({'url':checkout_session.url})
 
 
 @app.route("/all_transactions", methods=["POST"])

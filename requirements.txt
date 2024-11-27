@@ -6,3 +6,4 @@ cryptography==42.0.2
 pytest 
 Flask-Testing
 requests
+stripe==7.11.0
