@@ -191,7 +191,6 @@ const SubMenu = () => {
               margin="dense"
               value={quantity}
               onChange={handleQuantityChange}
-              defaultValue={1}
             />
             <Typography variant="body1" color="text.secondary" sx={{ mt: 2 }}>
               Price: ${price}

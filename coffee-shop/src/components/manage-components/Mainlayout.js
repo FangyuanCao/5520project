@@ -5,7 +5,6 @@ import { Drawer, List, ListItem, ListItemText, AppBar, Toolbar, Typography, Box 
 import MembershipManage from './MembershipManage';
 import AdminManage from './AdminManage';
 import OrderManage from './OrderManage';
-import Analytics from './Analytics';
 import Button from '@mui/material/Button';
 import {useNavigate} from 'react-router-dom';
 
@@ -60,9 +59,6 @@ const Mainlayout = () => {
                     <ListItem button component={Link} to="/admin/orders">
                         <ListItemText primary="Order Management" />
                     </ListItem>
-                    <ListItem button component={Link} to="/admin/analytics">
-                        <ListItemText primary="Analytics" />
-                    </ListItem>
                 </List>
             </Drawer>
 
@@ -80,12 +76,11 @@ const Mainlayout = () => {
                     minHeight: '100vh'
                 }}
             >
-                <Box sx={{ width: '100%', maxWidth: '800px', ml: 3, mt: 4 }}> {/* 控制内容宽度并增加顶部距离 */}
+                <Box sx={{ width: '100%', maxWidth: '90%', ml: 3, mt: 4 }}> 
                     <Routes>
                         <Route path="membership" element={<MembershipManage />} />
                         <Route path="admins" element={<AdminManage />} />
                         <Route path="orders" element={<OrderManage />} />
-                        <Route path="analytics" element={<Analytics />} />
                     </Routes>
                 </Box>
             </Box>

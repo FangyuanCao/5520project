@@ -1,15 +1,19 @@
 // src/components/manage-components/OrderManage.js
 import React, { useState, useEffect } from 'react';
-import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button } from '@mui/material';
+import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button,Divider } from '@mui/material';
 
 const OrderManage = () => {
     // 示例订单数据，可以替换为从 API 获取的数据
-    const [orders, setOrders] = useState([
-        // { id: '1001', details: 'Product A - Size M', amount: '$50.00' },
-        // { id: '1002', details: 'Product B - Size L', amount: '$75.00' },
-        // { id: '1003', details: 'Product C - Size S', amount: '$25.00' },
-    ]);
+    const [orders, setOrders] = useState([ ]);
     const [income, setIncome] = useState(null);
+    const [isOpen, setIsOpen] = useState(true); 
+
+
+    const toggleStore = () => {
+        setIsOpen(!isOpen);
+        alert(isOpen ? 'Store is now closed!' : 'Store is now open!');
+    };
+
 
     // 
     useEffect ( () => {
@@ -67,11 +71,11 @@ const OrderManage = () => {
     };
 
     return (
-        <Box sx={{ p: 3 }}>
+        <Box sx={{ p: 3,  width: '100%'}}>
             <Typography variant="h4" gutterBottom>
                 Order Management
             </Typography>
-            <Box>{income}</Box>
+            
             <TableContainer component={Paper}>
                 <Table>
                     <TableHead>
@@ -112,7 +116,18 @@ const OrderManage = () => {
                     </TableBody>
                 </Table>
             </TableContainer>
-            
+            <Divider sx={{ my: 3 }} />
+            <Typography variant="h6">
+                Total Profit/Loss: ${income}
+            </Typography>
+            <Button 
+                variant="contained" 
+                color={isOpen ? "secondary" : "primary"} 
+                onClick={toggleStore} 
+                sx={{ mt: 2 }}
+            >
+                {isOpen ? 'Close Store' : 'Open Store'}
+            </Button>
         </Box>
     );
 };
