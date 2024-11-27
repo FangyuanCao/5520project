@@ -14,6 +14,9 @@ import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import coffeeImage from './picture/coffee.jpg';
+// import allImages from './picture/all';
+// import foodImages from './picture/food';
+// import specialImages from './picture/specials';
 
 const SubMenu = () => {
   const [products, setProducts] = useState([]);
@@ -21,6 +24,7 @@ const SubMenu = () => {
   const [selectedSize, setSelectedSize] = useState('');
   const [price, setPrice] = useState(0);
   const [quantity, setQuantity] = useState(1);
+  const [allImages, setAllImage] = useState([]);
   const { category } = useParams();
   const navigate = useNavigate();
 
@@ -39,6 +43,22 @@ const SubMenu = () => {
       .then((response) => response.json())
       .then((data) => setProducts(data.product_list || []))
       .catch((error) => console.error('Error fetching products:', error));
+
+
+
+    const importAllImages = (requireContext) => {
+      const images = {};
+      requireContext.keys().forEach((key) => {
+        const imageName = key.replace('./', ''); // Remove './' from file name
+        images[imageName] = requireContext(key);
+      });
+      return images;
+    };
+    
+    const allImages = importAllImages(require.context('./picture/all', false, /\.(png|jpe?g|svg)$/));
+    setAllImage(allImages);
+    console.log(allImages);
+      
   }, [category]);
   useEffect(() => {
     if (selectedProduct) {
@@ -150,7 +170,13 @@ const SubMenu = () => {
                 component="img"
                 alt={product.name}
                 style={{ width: '100%', height: 200, objectFit: 'cover' }}
-                image={coffeeImage}
+                image={
+                  allImages[`${product.name}.png`]
+                  ? allImages[`${product.name}.png`]
+                  : allImages[`${product.name}.jpg`]
+                  ? allImages[`${product.name}.jpg`]
+                  : coffeeImage
+                }
               />
               <CardContent>
                 <Typography gutterBottom variant="h6" component="div">
