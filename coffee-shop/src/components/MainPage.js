@@ -101,14 +101,14 @@ export default function ImgMediaCard() {
       />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
-          Events
+          Rewards
         </Typography>
         <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-          This is a card display special events
+          This is a card display special rewards
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small" onClick={() => navigate('/events')}>CLICK It</Button>
+        <Button size="small" onClick={() => navigate('/Discount')}>CLICK It</Button>
       </CardActions>
       </Card>
     </Grid>
