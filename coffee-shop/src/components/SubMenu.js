@@ -42,7 +42,7 @@ const SubMenu = () => {
   }, [category]);
   useEffect(() => {
     if (selectedProduct) {
-      const defaultSize = selectedProduct.selectedSize || 'S'; 
+      const defaultSize = selectedProduct.selectedSize || (selectedProduct.options && selectedProduct.options.length > 0 ? selectedProduct.options[0] : 'S');
       setSelectedSize(defaultSize);
       setQuantity(selectedProduct.quantity || 1);
       const sizeIndex = selectedProduct.options.indexOf(defaultSize);
@@ -59,7 +59,7 @@ const SubMenu = () => {
   const handleOpenDialog = (product) => {
     console.log(product);
     setSelectedProduct(product);
-    setSelectedSize('');
+    setSelectedSize(product.options && product.options.length > 0 ? product.options[0] : 'S');
     setPrice(0);
   };
 

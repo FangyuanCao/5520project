@@ -3,35 +3,35 @@
         "name": "Classic White Mug",
         "type": "special",
         "price": 15,
-        "options": ["S", "M", "L"],
+        "options": [ "L"],
         "status": true
     },
     {
         "name": "Holiday Red Cup",
         "type": "special",
         "price": 20,
-        "options": ["S", "M", "L"],
+        "options": [ "M", "L"],
         "status": true
     },
     {
         "name": "Travel Tumbler",
         "type": "special",
         "price": 25,
-        "options": ["M", "L"],
+        "options": [ "L"],
         "status": true
     },
     {
         "name": "Reusable Cold Cup",
         "type": "special",
         "price": 10,
-        "options": ["M", "L"],
+        "options": ["S","M", "L"],
         "status": true
     },
     {
         "name": "Ceramic Coffee Mug",
         "type": "special",
         "price": 18,
-        "options": ["S", "M", "L"],
+        "options": [ "M", "L"],
         "status": true
     }
 ]
