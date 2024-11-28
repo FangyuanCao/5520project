@@ -50,15 +50,20 @@ export default function LoginGrid() {
         }),
       });
       const data = await response.json();
-      if (data.authentication) {
-        localStorage.setItem('token', data.authentication);
-        console.log('Token stored:', data.authentication);
+      if (data.status) {
+        // localStorage.setItem('token', data.authentication);
+        // console.log('Token stored:', data.authentication);
+        console.log(data);
+        // window.alert(data.status);
+
       } else {
         console.error('Login failed:', data.status);
       }
-      console.log(data);
+      // console.log(data);
+      window.alert(data.status);
     } catch (error) {
       console.error(' error !', error);
+      
     }
   };
   return (
