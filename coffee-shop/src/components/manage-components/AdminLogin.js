@@ -49,7 +49,7 @@ export default function  Login() {
         localStorage.setItem('username', username);
         console.log('Token stored:', data.authentication);
         
-            navigate('/Admin/orders');
+            navigate('/admin/membership');
             window.location.reload();
       } else {
         setDisplayAlert(true);

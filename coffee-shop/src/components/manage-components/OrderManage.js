@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button,Divider } from '@mui/material';
 
 const OrderManage = () => {
-    // 示例订单数据，可以替换为从 API 获取的数据
     const [orders, setOrders] = useState([ ]);
     const [income, setIncome] = useState(null);
     const [isOpen, setIsOpen] = useState(true); 
@@ -41,8 +40,6 @@ const OrderManage = () => {
 
 
     },[]);
-
-    // 处理发货按钮点击事件
     const handleShip = (orderId) => {
         alert(`Order ${orderId} has been shipped!`);
         const token = localStorage.getItem('token');
