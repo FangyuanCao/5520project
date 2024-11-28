@@ -4,7 +4,7 @@ import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead
 
 const OrderManage = () => {
     const [orders, setOrders] = useState([ ]);
-    const [income, setIncome] = useState(null);
+    const [income, setIncome] = useState(0);
     const [isOpen, setIsOpen] = useState(true); 
 
 
